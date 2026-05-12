@@ -1,0 +1,162 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "남자&돈&여자 월말특강 | 성공한 남자의 모든 것",
+  description = "매력·심리·브랜딩·인간관계·부의마인드 — 성공한 남자가 되는 단 하나의 강의",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --white: #ffffff;
+    --cream: #fefcf6;
+    --cream-deep: #faf6ec;
+    --gold-900: #5c3d00;
+    --gold-700: #8b6914;
+    --gold-500: #c9a84c;
+    --gold-400: #d4b45a;
+    --gold-300: #e8cc7a;
+    --gold-100: #fdf4d6;
+    --gold-border: rgba(184, 148, 30, 0.18);
+    --gold-border-strong: rgba(184, 148, 30, 0.35);
+    --gold-shadow: rgba(184, 148, 30, 0.12);
+    --text-900: #111111;
+    --text-700: #333333;
+    --text-500: #666666;
+    --text-300: #999999;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Split-pane layout: each side scrolls independently */
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: #F0EDE6; /* 1140px 밖 양옆 배경 — 따뜻한 크림 */
+    color: var(--text-700);
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Playfair Display", "Noto Sans KR", serif;
+    color: var(--text-900);
+    line-height: 1.2;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; height: auto; display: block; }
+
+  .gold-text {
+    background: linear-gradient(135deg, var(--gold-700) 0%, var(--gold-500) 50%, var(--gold-300) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-line {
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-700), var(--gold-500), var(--gold-300));
+    border-radius: 2px;
+    margin: 16px 0 24px;
+  }
+
+  .label-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-700);
+  }
+
+  .btn-kakao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 17px 24px;
+    background: #FEE500;
+    color: #391B1B;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all 0.22s var(--ease);
+    box-shadow: 0 4px 20px rgba(254, 229, 0, 0.45);
+    letter-spacing: 0.01em;
+  }
+
+  .btn-kakao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(254, 229, 0, 0.6);
+  }
+
+  .btn-kakao:active { transform: translateY(0); }
+
+  .btn-gold-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    background: transparent;
+    color: var(--gold-700);
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--gold-border-strong);
+    cursor: pointer;
+    transition: all 0.22s var(--ease);
+  }
+
+  .btn-gold-outline:hover {
+    background: var(--gold-100);
+    border-color: var(--gold-500);
+    color: var(--gold-900);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
