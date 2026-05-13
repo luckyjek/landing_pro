@@ -531,13 +531,13 @@ const faqs = [
 ────────────────────────────────────── */
 .page-wrapper {
   display: grid;
-  grid-template-columns: 1fr 420px;
+  grid-template-columns: 1fr 360px;
   height: 100vh;
   overflow: hidden;
   max-width: 1140px;
   width: 100%;
   margin: 0 auto;
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.07); /* 뷰포트가 넓을 때 경계 표시 */
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.07);
 }
 
 /* LEFT: 독립 스크롤 */
@@ -555,22 +555,19 @@ const faqs = [
 .content-left::-webkit-scrollbar-track { background: transparent; }
 .content-left::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 3px; }
 
-/* RIGHT: 고정 (스크롤 필요시 자체 스크롤) */
+/* RIGHT: 스태틱 고정 패널 (스크롤 없음) */
 .panel-right {
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   background: var(--cream-deep);
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold-border) transparent;
+  border-left: 1.5px solid var(--gold-border-strong);
 }
 
-.panel-right::-webkit-scrollbar { width: 4px; }
-.panel-right::-webkit-scrollbar-track { background: transparent; }
-.panel-right::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 2px; }
-
 .panel-scroll {
-  padding: 48px 36px 60px;
+  padding: 28px 26px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ──────────────────────────────────────
@@ -1326,35 +1323,35 @@ const faqs = [
 ────────────────────────────────────── */
 .panel-event-badge {
   display: inline-block;
-  padding: 5px 14px;
+  padding: 4px 12px;
   background: linear-gradient(135deg, var(--gold-700), var(--gold-500));
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   border-radius: 50px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .panel-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.25;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 .panel-info-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
 }
 
 .panel-info-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
+  gap: 9px;
+  font-size: 12px;
   color: var(--text-500);
   font-weight: 500;
 }
@@ -1364,7 +1361,7 @@ const faqs = [
 .panel-divider {
   height: 1px;
   background: var(--gold-border);
-  margin: 22px 0;
+  margin: 12px 0;
 }
 
 .panel-price-label {
@@ -1402,29 +1399,29 @@ const faqs = [
 
 .panel-price-current .gold-text {
   font-family: "Playfair Display", serif;
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 1;
 }
 
 .panel-price-note {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-300);
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .panel-checklist {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .panel-checklist li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
+  gap: 8px;
+  font-size: 12px;
   color: var(--text-500);
   font-weight: 500;
 }
@@ -1432,7 +1429,7 @@ const faqs = [
 .panel-checklist li svg { color: var(--gold-500); flex-shrink: 0; }
 
 .panel-urgency {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .urgency-bar {
@@ -1458,12 +1455,12 @@ const faqs = [
 .panel-guarantee {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
+  gap: 8px;
+  padding: 10px 12px;
   background: var(--gold-100);
   border: 1px solid var(--gold-border);
   border-radius: var(--radius-md);
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .panel-guarantee svg { color: var(--gold-700); flex-shrink: 0; }
@@ -1522,10 +1519,10 @@ const faqs = [
    RESPONSIVE
 ────────────────────────────────────── */
 @media (max-width: 1100px) {
-  .page-wrapper { grid-template-columns: 1fr 320px; }
+  .page-wrapper { grid-template-columns: 1fr 300px; }
   .sec { padding: 64px 40px; }
   .sec-final { padding: 72px 40px; }
-  .panel-scroll { padding: 40px 28px 60px; }
+  .panel-scroll { padding: 24px 20px 16px; }
 }
 
 @media (max-width: 768px) {
