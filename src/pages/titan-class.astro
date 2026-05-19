@@ -1,7 +1,6 @@
 ---
 import LightLayout from '../layouts/LightLayout.astro';
 
-const KAKAO_CHAT = "https://pf.kakao.com/_xoxxxxxx/chat";
 const KAKAO_CHANNEL = "https://pf.kakao.com/_xoxxxxxx";
 
 const topics = [
@@ -394,10 +393,9 @@ const faqs = [
           <strong>결정의 속도입니다.</strong>
         </p>
         <div class="final-ctas">
-          <a href="/api/kakao-auth" class="btn-kakao final-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.477 3 2 6.582 2 11c0 2.857 1.737 5.379 4.376 6.943L5.5 21l3.432-1.937A11.84 11.84 0 0 0 12 19.2c5.523 0 10-3.582 10-8.2S17.523 3 12 3z"/></svg>
-            카카오로 지금 바로 신청하기
-          </a>
+          <button class="btn-black final-btn" onclick="openApplyModal()">
+            크라운코드 커뮤니티 무료 입장
+          </button>
           <a href={KAKAO_CHANNEL} target="_blank" rel="noopener noreferrer" class="btn-ghost-white">
             궁금한 점 먼저 물어보기
           </a>
@@ -416,94 +414,26 @@ const faqs = [
   <aside class="panel-right" aria-label="수강 신청 패널">
     <div class="panel-scroll">
 
-      <div class="panel-event-badge">월말 특강</div>
+      <p class="panel-tag">무료강의</p>
 
-      <h2 class="panel-title">남자 &amp; 돈 &amp; 여자<br /><span class="gold-text">모두 잡는 법</span></h2>
+      <h2 class="panel-main-title">
+        [월말특강] 남자라면 반드시 알아야 할 모든 것
+      </h2>
 
-      <div class="panel-info-list">
-        <div class="panel-info-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span>2026년 5월 31일 (일)</span>
-        </div>
-        <div class="panel-info-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>오전 10:00 — 오후 6:00 (8시간)</span>
-        </div>
-        <div class="panel-info-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span>서울 강남 (신청 확정 후 안내)</span>
-        </div>
-        <div class="panel-info-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          <span>소수 정예 최대 20명</span>
-        </div>
+      <div class="panel-meta-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="panel-date-text">—</span>
       </div>
 
-      <div class="panel-divider"></div>
+      <button class="btn-black panel-cta-btn" onclick="openApplyModal()">
+        무료강의 신청하기
+      </button>
 
-      <div class="panel-price-block">
-        <span class="panel-price-label">수강료</span>
-        <div class="panel-price-row">
-          <span class="panel-price-original">₩ 490,000</span>
-          <span class="panel-price-badge">얼리버드 할인</span>
-        </div>
-        <div class="panel-price-current">
-          <span class="gold-text">₩ 290,000</span>
-        </div>
-        <p class="panel-price-note">부가세 포함 · 카드/계좌이체 가능</p>
-      </div>
+      <p class="panel-viewers">
+        <span class="panel-viewers-dot"></span>
+        지금 <strong>20명</strong>이 보고있어요!
+      </p>
 
-      <div class="panel-divider"></div>
-
-      <a href="/api/kakao-auth" class="btn-kakao">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.477 3 2 6.582 2 11c0 2.857 1.737 5.379 4.376 6.943L5.5 21l3.432-1.937A11.84 11.84 0 0 0 12 19.2c5.523 0 10-3.582 10-8.2S17.523 3 12 3z"/></svg>
-        카카오로 바로 신청하기
-      </a>
-
-      <a href={KAKAO_CHANNEL} target="_blank" rel="noopener noreferrer" class="btn-gold-outline" style="margin-top: 10px;">
-        채널 추가 후 문의하기
-      </a>
-
-      <div class="panel-divider"></div>
-
-      <ul class="panel-checklist">
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          8시간 풀데이 집중 강의
-        </li>
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          5가지 핵심 주제 완전 정복
-        </li>
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          워크북 &amp; 30일 실행 플랜
-        </li>
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          수강생 전용 단톡방 (30일)
-        </li>
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          복습 자료 3개월 무제한
-        </li>
-        <li>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          개인 Q&amp;A 세션 포함
-        </li>
-      </ul>
-
-      <div class="panel-urgency">
-        <div class="urgency-bar">
-          <div class="urgency-fill" style="width: 75%"></div>
-        </div>
-        <p class="urgency-text">이번 기수 <strong>75% 마감</strong> · 잔여 <strong class="gold-text">5석</strong></p>
-      </div>
-
-      <div class="panel-guarantee">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <p>강의 시작 전 취소 시 <strong>전액 환불</strong> 보장</p>
-      </div>
 
     </div>
   </aside>
@@ -512,17 +442,275 @@ const faqs = [
 
 <!-- Mobile bottom bar -->
 <div class="mobile-bar" aria-label="모바일 신청">
-  <div class="mobile-bar-price">
-    <span class="mobile-original">₩490,000</span>
-    <span class="mobile-price gold-text">₩290,000</span>
+  <span class="mobile-bar-label" id="mobile-date-text">—</span>
+  <button class="btn-black mobile-kakao-btn" onclick="openApplyModal()">
+    무료강의 신청하기
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     APPLY MODAL
+══════════════════════════════════════════════ -->
+<div id="apply-modal" class="modal-overlay" aria-hidden="true" onclick="handleOverlayClick(event)">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" onclick="closeApplyModal()" aria-label="닫기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="modal-header">
+      <span class="modal-badge">크라운코드 커뮤니티</span>
+      <h2 id="modal-title" class="modal-title">무료 입장 신청</h2>
+      <p class="modal-desc">아래 정보를 입력하시면 커뮤니티에 무료로 입장하실 수 있습니다.</p>
+    </div>
+
+    <form id="apply-form" class="modal-form" onsubmit="submitApplyForm(event)" novalidate>
+      <div class="form-group">
+        <label for="input-name">이름 <span class="required">*</span></label>
+        <input type="text" id="input-name" name="name" placeholder="실명을 입력해주세요" autocomplete="name" required />
+      </div>
+      <div class="form-group">
+        <label for="input-phone">전화번호 <span class="required">*</span></label>
+        <input type="tel" id="input-phone" name="phone" placeholder="010-0000-0000" autocomplete="tel" required />
+      </div>
+      <p id="form-error" class="form-error" aria-live="polite"></p>
+      <button type="submit" id="modal-submit-btn" class="btn-black modal-submit-btn">
+        무료 입장하기
+      </button>
+    </form>
   </div>
-  <a href="/api/kakao-auth" class="btn-kakao mobile-kakao-btn">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.477 3 2 6.582 2 11c0 2.857 1.737 5.379 4.376 6.943L5.5 21l3.432-1.937A11.84 11.84 0 0 0 12 19.2c5.523 0 10-3.582 10-8.2S17.523 3 12 3z"/></svg>
-    카카오로 신청
-  </a>
 </div>
 
 </LightLayout>
+
+<script is:inline>
+  function openApplyModal() {
+    const modal = document.getElementById('apply-modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      const nameInput = document.getElementById('input-name');
+      if (nameInput) nameInput.focus();
+    }, 80);
+  }
+
+  function closeApplyModal() {
+    const modal = document.getElementById('apply-modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    // 성공 화면이 표시된 경우 원래 폼으로 복원
+    const card = modal.querySelector('.modal-card');
+    if (card && card.classList.contains('success-mode')) {
+      card.classList.remove('success-mode');
+      card.innerHTML = originalCardHTML;
+    }
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target.id === 'apply-modal') closeApplyModal();
+  }
+
+  // 원본 카드 HTML 보존 + 전화번호 포맷터 연결
+  var originalCardHTML = '';
+  document.addEventListener('DOMContentLoaded', function() {
+    const card = document.querySelector('.modal-card');
+    if (card) originalCardHTML = card.innerHTML;
+    attachPhoneFormatter();
+    updateEventDate();
+    startViewerCounter();
+  });
+
+  function startViewerCounter() {
+    var el = document.querySelector('.panel-viewers strong');
+    if (!el) return;
+    setInterval(function() {
+      var next = Math.floor(Math.random() * 46) + 5; // 5~50
+      el.textContent = next + '명';
+    }, 60000);
+  }
+
+  function updateEventDate() {
+    var DAY_KO = ['일', '월', '화', '수', '목', '금', '토'];
+
+    function lastDayOf(year, month) {
+      return new Date(year, month + 1, 0);
+    }
+
+    function getEventDate() {
+      var now = new Date();
+      var last = lastDayOf(now.getFullYear(), now.getMonth());
+      var event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
+      if (now >= event) {
+        var nm = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
+        var ny = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
+        last = lastDayOf(ny, nm);
+        event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
+      }
+      return event;
+    }
+
+    var event = getEventDate();
+    var month = event.getMonth() + 1;
+    var date  = event.getDate();
+    var day   = DAY_KO[event.getDay()];
+
+    var txt = month + '월 ' + date + '일 (' + day + ') 오후 7시';
+    var dateEl = document.getElementById('panel-date-text');
+    if (dateEl) dateEl.textContent = txt;
+    var mobileEl = document.getElementById('mobile-date-text');
+    if (mobileEl) mobileEl.textContent = txt;
+  }
+
+  function attachPhoneFormatter() {
+    const phoneEl = document.getElementById('input-phone');
+    if (!phoneEl) return;
+    phoneEl.addEventListener('input', function() {
+      var formatted = formatPhone(this.value);
+      this.value = formatted;
+    });
+  }
+
+  function formatPhone(value) {
+    var digits = value.replace(/\D/g, '').slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.startsWith('02')) {
+      if (digits.length <= 6)  return digits.slice(0,2) + '-' + digits.slice(2);
+      if (digits.length <= 9)  return digits.slice(0,2) + '-' + digits.slice(2,5) + '-' + digits.slice(5);
+      return digits.slice(0,2) + '-' + digits.slice(2,6) + '-' + digits.slice(6);
+    }
+    if (digits.length <= 6)  return digits.slice(0,3) + '-' + digits.slice(3);
+    if (digits.length <= 10) return digits.slice(0,3) + '-' + digits.slice(3,6) + '-' + digits.slice(6);
+    return digits.slice(0,3) + '-' + digits.slice(3,7) + '-' + digits.slice(7);
+  }
+
+  function isValidPhone(phone) {
+    return /^(01[0-9]-\d{3,4}-\d{4}|02-\d{3,4}-\d{4}|0[3-9]\d-\d{3,4}-\d{4})$/.test(phone);
+  }
+
+  function showSuccess(name) {
+    const card = document.querySelector('.modal-card');
+    if (!card) return;
+    card.classList.add('success-mode');
+    card.innerHTML = `
+      <div class="success-inner">
+        <div class="success-emoji-wrap">🎉</div>
+        <h2 class="success-title">신청 완료!</h2>
+        <p class="success-name">${name}님,<br>크라운코드 커뮤니티에<br>오신 것을 환영합니다!</p>
+        <p class="success-sub">빠른 시일 내에 연락드리겠습니다.</p>
+        <button class="btn-black success-close-btn" onclick="closeApplyModal()" style="font-size:15px;padding:14px 24px;margin-top:20px;">확인</button>
+      </div>
+    `;
+    launchConfetti();
+  }
+
+  function launchConfetti() {
+    const overlay = document.getElementById('apply-modal');
+    const colors = ['#C9A84C','#F0D080','#111111','#8B6914','#E8CC7A','#FF6B6B','#4ECDC4','#ffffff','#FFD93D'];
+    const total = 90;
+
+    for (var i = 0; i < total; i++) {
+      (function(idx) {
+        var piece = document.createElement('div');
+        var isLeft = idx < total / 2;
+        var startPct = isLeft ? Math.random() * 18 : 82 + Math.random() * 18;
+        var color = colors[Math.floor(Math.random() * colors.length)];
+        var w = 5 + Math.random() * 7;
+        var h = 9 + Math.random() * 10;
+        var delay = Math.random() * 350;
+
+        piece.style.cssText = [
+          'position:fixed',
+          'bottom:0',
+          'left:' + startPct + '%',
+          'width:' + w + 'px',
+          'height:' + h + 'px',
+          'background:' + color,
+          'border-radius:2px',
+          'z-index:9999',
+          'pointer-events:none',
+          'opacity:1',
+        ].join(';');
+
+        overlay.appendChild(piece);
+
+        // 왼쪽은 오른쪽 위 방향, 오른쪽은 왼쪽 위 방향으로 발사
+        var spreadAngle = isLeft
+          ? (50 + Math.random() * 70)   // 50°~120° (왼쪽에서 오른쪽 위)
+          : (60 + Math.random() * 70);  // 60°~130° (오른쪽에서 왼쪽 위)
+        var rad = spreadAngle * Math.PI / 180;
+        var speed = 300 + Math.random() * 350;
+        var vx = (isLeft ? 1 : -1) * Math.cos(rad) * speed;
+        var vy = -Math.sin(rad) * speed;
+        var rotate = 360 + Math.random() * 720;
+
+        setTimeout(function() {
+          piece.animate([
+            { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+            { transform: 'translate(' + vx * 0.6 + 'px,' + vy * 0.6 + 'px) rotate(' + (rotate * 0.5) + 'deg)', opacity: 1, offset: 0.45 },
+            { transform: 'translate(' + (vx + Math.random() * 60 - 30) + 'px,' + (vy + 700) + 'px) rotate(' + rotate + 'deg)', opacity: 0 }
+          ], {
+            duration: 1400 + Math.random() * 600,
+            easing: 'ease-in',
+            fill: 'forwards'
+          }).onfinish = function() { piece.remove(); };
+        }, delay);
+      })(i);
+    }
+  }
+
+  async function submitApplyForm(e) {
+    e.preventDefault();
+    const form = e.target;
+    const nameEl  = form.querySelector('#input-name');
+    const phoneEl = form.querySelector('#input-phone');
+    const errEl   = document.getElementById('form-error');
+    const btn     = document.getElementById('modal-submit-btn');
+
+    if (!nameEl?.value.trim() || !phoneEl?.value.trim()) {
+      if (errEl) errEl.textContent = '모든 항목을 입력해주세요.';
+      return;
+    }
+
+    if (!isValidPhone(phoneEl.value.trim())) {
+      if (errEl) errEl.textContent = '올바른 전화번호를 입력해주세요. (예: 010-1234-5678)';
+      phoneEl.focus();
+      return;
+    }
+
+    var enteredName = nameEl.value.trim();
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+    if (errEl) errEl.textContent = '';
+
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: enteredName,
+          phone: phoneEl.value.trim(),
+        }),
+      });
+
+      if (res.ok) {
+        showSuccess(enteredName);
+      } else {
+        throw new Error();
+      }
+    } catch {
+      if (errEl) errEl.textContent = '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      btn.disabled = false;
+      btn.textContent = '무료 입장하기';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeApplyModal();
+  });
+</script>
 
 <style>
 /* ──────────────────────────────────────
@@ -537,7 +725,6 @@ const faqs = [
   max-width: 1140px;
   width: 100%;
   margin: 0 auto;
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.07);
 }
 
 /* LEFT: 독립 스크롤 */
@@ -557,7 +744,7 @@ const faqs = [
 
 /* RIGHT: 스태틱 고정 패널 (스크롤 없음) */
 .panel-right {
-  height: 100vh;
+  height: 25vh;
   overflow: hidden;
   background: var(--cream-deep);
   border-left: 1.5px solid var(--gold-border-strong);
@@ -1321,157 +1508,107 @@ const faqs = [
 /* ──────────────────────────────────────
    RIGHT PANEL
 ────────────────────────────────────── */
-.panel-event-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  background: linear-gradient(135deg, var(--gold-700), var(--gold-500));
-  color: #fff;
-  font-size: 10px;
+.panel-tag {
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border-radius: 50px;
-  margin-bottom: 10px;
+  color: var(--text-500);
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
 }
 
-.panel-title {
+.panel-main-title {
   font-size: 20px;
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 14px;
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--text-900);
+  font-family: "Noto Sans KR", sans-serif;
+  word-break: keep-all;
+  margin-bottom: 16px;
 }
 
-.panel-info-list {
+.panel-meta-row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 7px;
-}
-
-.panel-info-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 12px;
-  color: var(--text-500);
-  font-weight: 500;
-}
-
-.panel-info-item svg { color: var(--gold-500); flex-shrink: 0; }
-
-.panel-divider {
-  height: 1px;
-  background: var(--gold-border);
-  margin: 12px 0;
-}
-
-.panel-price-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-300);
-  margin-bottom: 10px;
-}
-
-.panel-price-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.panel-price-original {
-  font-size: 14px;
-  color: var(--text-300);
-  text-decoration: line-through;
-}
-
-.panel-price-badge {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
-  background: #FEE500;
-  color: #5c3d00;
-  border-radius: 4px;
-  letter-spacing: 0.04em;
-}
-
-.panel-price-current .gold-text {
-  font-family: "Playfair Display", serif;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.panel-price-note {
-  font-size: 11px;
-  color: var(--text-300);
-  margin-top: 4px;
-}
-
-.panel-checklist {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.panel-checklist li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-500);
-  font-weight: 500;
-}
-
-.panel-checklist li svg { color: var(--gold-500); flex-shrink: 0; }
-
-.panel-urgency {
-  margin-top: 10px;
-}
-
-.urgency-bar {
-  height: 5px;
-  background: rgba(0,0,0,0.08);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.urgency-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold-700), var(--gold-400));
-  border-radius: 3px;
-}
-
-.urgency-text {
   font-size: 13px;
   color: var(--text-500);
-  text-align: center;
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.panel-guarantee {
+.panel-meta-row svg {
+  flex-shrink: 0;
+  color: var(--text-400);
+}
+
+.panel-cta-btn {
+  font-size: 16px;
+  padding: 12px 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+}
+
+.panel-viewers {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: var(--gold-100);
-  border: 1px solid var(--gold-border);
-  border-radius: var(--radius-md);
-  margin-top: 8px;
-}
-
-.panel-guarantee svg { color: var(--gold-700); flex-shrink: 0; }
-
-.panel-guarantee p {
+  justify-content: center;
+  gap: 7px;
   font-size: 12px;
   color: var(--text-500);
-  line-height: 1.5;
+  margin-bottom: 10px;
 }
 
-.panel-guarantee strong { color: var(--gold-700); }
+.panel-viewers strong {
+  color: var(--text-900);
+  font-weight: 700;
+}
+
+.panel-viewers-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: dot-glow 2.8s ease-in-out infinite;
+}
+
+.panel-viewers-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: #22c55e;
+  opacity: 0;
+  animation: dot-ripple 2.8s ease-in-out infinite;
+}
+
+@keyframes dot-glow {
+  0%, 100% { opacity: 0.55; box-shadow: 0 0 0px #22c55e; }
+  50%       { opacity: 1;    box-shadow: 0 0 6px rgba(34,197,94,0.6); }
+}
+
+@keyframes dot-ripple {
+  0%   { transform: scale(1);   opacity: 0.35; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.panel-inquiry-link {
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-300);
+  text-decoration: none;
+  padding: 8px 0;
+  transition: color 0.18s;
+}
+
+.panel-inquiry-link:hover {
+  color: var(--text-700);
+  text-decoration: underline;
+}
 
 /* ──────────────────────────────────────
    MOBILE BOTTOM BAR
@@ -1491,28 +1628,18 @@ const faqs = [
   gap: 16px;
 }
 
-.mobile-bar-price {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.mobile-original {
+.mobile-bar-label {
   font-size: 12px;
-  color: var(--text-300);
-  text-decoration: line-through;
-}
-
-.mobile-price {
-  font-family: "Playfair Display", serif;
-  font-size: 20px;
-  font-weight: 700;
+  color: var(--text-500);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .mobile-kakao-btn {
   flex: 1;
   font-size: 15px;
   padding: 14px 16px;
+  border-radius: var(--radius-sm);
 }
 
 /* ──────────────────────────────────────
@@ -1555,5 +1682,224 @@ const faqs = [
   .hero-numbers { flex-direction: column; }
   .hero-num-divider { width: 60px; height: 1px; }
   .testimonial-change { flex-wrap: wrap; }
+}
+
+/* ──────────────────────────────────────
+   APPLY MODAL
+────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 44px 40px 40px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.28s var(--ease);
+}
+
+.modal-overlay.is-open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-500);
+  transition: all 0.18s;
+}
+
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-900);
+}
+
+.modal-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  margin-bottom: 14px;
+}
+
+.modal-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-900);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.modal-desc {
+  font-size: 14px;
+  color: var(--text-500);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-700);
+  letter-spacing: 0.02em;
+}
+
+.required {
+  color: #e53e3e;
+  margin-left: 2px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 16px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  color: var(--text-900);
+  background: #fafafa;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  -webkit-appearance: none;
+}
+
+.form-group input::placeholder {
+  color: var(--text-300);
+}
+
+.form-group input:focus {
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+  background: #ffffff;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #e53e3e;
+  min-height: 18px;
+  margin-top: -6px;
+}
+
+.modal-submit-btn {
+  margin-top: 4px;
+  font-size: 17px;
+  padding: 17px 24px;
+}
+
+@media (max-width: 480px) {
+  .modal-card {
+    padding: 36px 24px 28px;
+  }
+  .modal-title { font-size: 22px; }
+}
+
+/* ──────────────────────────────────────
+   MODAL SUCCESS STATE
+────────────────────────────────────── */
+.modal-card.success-mode {
+  text-align: center;
+  padding: 52px 40px 48px;
+}
+
+.success-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.success-emoji-wrap {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 20px;
+  animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0) rotate(-20deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+}
+
+.success-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-900);
+  margin-bottom: 14px;
+  animation: fade-up 0.4s 0.15s ease both;
+}
+
+.success-name {
+  font-size: 17px;
+  color: var(--text-700);
+  line-height: 1.75;
+  margin-bottom: 10px;
+  animation: fade-up 0.4s 0.25s ease both;
+}
+
+.success-sub {
+  font-size: 13px;
+  color: var(--text-300);
+  margin-bottom: 32px;
+  animation: fade-up 0.4s 0.32s ease both;
+}
+
+.success-close-btn {
+  font-size: 15px;
+  padding: 14px 24px;
+  margin-top: 20px;
+  animation: fade-up 0.4s 0.38s ease both;
+}
+
+@keyframes fade-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 </style>

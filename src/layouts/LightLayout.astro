@@ -30,17 +30,17 @@ const {
 <style is:global>
   :root {
     --white: #ffffff;
-    --cream: #fefcf6;
-    --cream-deep: #faf6ec;
-    --gold-900: #5c3d00;
-    --gold-700: #8b6914;
-    --gold-500: #c9a84c;
-    --gold-400: #d4b45a;
-    --gold-300: #e8cc7a;
-    --gold-100: #fdf4d6;
-    --gold-border: rgba(184, 148, 30, 0.18);
-    --gold-border-strong: rgba(184, 148, 30, 0.35);
-    --gold-shadow: rgba(184, 148, 30, 0.12);
+    --cream: #fafafa;
+    --cream-deep: #f5f5f5;
+    --gold-900: #000000;
+    --gold-700: #111111;
+    --gold-500: #333333;
+    --gold-400: #555555;
+    --gold-300: #888888;
+    --gold-100: #f0f0f0;
+    --gold-border: rgba(0, 0, 0, 0.08);
+    --gold-border-strong: rgba(0, 0, 0, 0.15);
+    --gold-shadow: rgba(0, 0, 0, 0.05);
     --text-900: #111111;
     --text-700: #333333;
     --text-500: #666666;
@@ -60,7 +60,7 @@ const {
   }
 
   body {
-    background: #F0EDE6; /* 1140px 밖 양옆 배경 — 따뜻한 크림 */
+    background: #e8e8e8;
     color: var(--text-700);
     font-family: "Noto Sans KR", sans-serif;
     font-size: 16px;
@@ -78,17 +78,16 @@ const {
   img { max-width: 100%; height: auto; display: block; }
 
   .gold-text {
-    background: linear-gradient(135deg, var(--gold-700) 0%, var(--gold-500) 50%, var(--gold-300) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-900);
+    -webkit-text-fill-color: var(--text-900);
+    background: none;
   }
 
   .gold-line {
     display: block;
-    width: 48px;
+    width: 40px;
     height: 2px;
-    background: linear-gradient(90deg, var(--gold-700), var(--gold-500), var(--gold-300));
+    background: var(--text-900);
     border-radius: 2px;
     margin: 16px 0 24px;
   }
@@ -99,7 +98,32 @@ const {
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--gold-700);
+    color: var(--text-500);
+  }
+
+  .btn-gold-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 24px;
+    background: transparent;
+    color: var(--text-500);
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: all 0.22s var(--ease);
+    text-decoration: none;
+  }
+
+  .btn-gold-outline:hover {
+    background: var(--cream-deep);
+    border-color: rgba(0,0,0,0.25);
+    color: var(--text-700);
   }
 
   .btn-kakao {
@@ -129,28 +153,39 @@ const {
 
   .btn-kakao:active { transform: translateY(0); }
 
-  .btn-gold-outline {
+  .btn-black {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     width: 100%;
-    padding: 14px 24px;
-    background: transparent;
-    color: var(--gold-700);
+    padding: 17px 24px;
+    background: #111111;
+    color: #ffffff;
     font-family: "Noto Sans KR", sans-serif;
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 16px;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--gold-border-strong);
+    border: none;
     cursor: pointer;
     transition: all 0.22s var(--ease);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    letter-spacing: 0.01em;
+    text-decoration: none;
   }
 
-  .btn-gold-outline:hover {
-    background: var(--gold-100);
-    border-color: var(--gold-500);
-    color: var(--gold-900);
+  .btn-black:hover {
+    background: #222222;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .btn-black:active { transform: translateY(0); }
+
+  .btn-black:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
