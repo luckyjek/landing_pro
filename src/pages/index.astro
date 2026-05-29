@@ -388,26 +388,9 @@ const faqs = [
     sections.forEach(function(sec) { if (sec) observer.observe(sec); });
   }
 
-  function lockScroll() {
-    var scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = '-' + scrollY + 'px';
-    document.body.style.width = '100%';
-    document.body.dataset.scrollY = scrollY;
-  }
-
-  function unlockScroll() {
-    var scrollY = parseInt(document.body.dataset.scrollY || '0');
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    window.scrollTo(0, scrollY);
-  }
-
   function openApplyModal() {
     const modal = document.getElementById('apply-modal');
     if (!modal) return;
-    lockScroll();
     modal.setAttribute('aria-hidden', 'false');
     modal.classList.add('is-open');
     setTimeout(() => {
@@ -419,7 +402,6 @@ const faqs = [
   function closeApplyModal() {
     const modal = document.getElementById('apply-modal');
     if (!modal) return;
-    unlockScroll();
     modal.setAttribute('aria-hidden', 'true');
     modal.classList.remove('is-open');
     // 성공 화면이 표시된 경우 원래 폼으로 복원
@@ -657,7 +639,6 @@ const faqs = [
   function openPrivacyModal() {
     var modal = document.getElementById('privacy-modal');
     if (!modal) return;
-    lockScroll();
     modal.setAttribute('aria-hidden', 'false');
     modal.classList.add('is-open');
   }
@@ -665,7 +646,6 @@ const faqs = [
   function closePrivacyModal() {
     var modal = document.getElementById('privacy-modal');
     if (!modal) return;
-    unlockScroll();
     modal.setAttribute('aria-hidden', 'true');
     modal.classList.remove('is-open');
   }
