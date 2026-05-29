@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/sinsa", "destination": "/" },
+    { "source": "/kingmaker", "destination": "/" }
+  ]
+}

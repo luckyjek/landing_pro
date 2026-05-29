@@ -3,9 +3,10 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
-  const { name, phone } = await request.json() as {
+  const { name, phone, source } = await request.json() as {
     name: string;
     phone: string;
+    source?: string;
   };
 
   const notionToken = import.meta.env.NOTION_TOKEN         ?? process.env.NOTION_TOKEN         ?? '';
@@ -22,6 +23,7 @@ export const POST: APIRoute = async ({ request }) => {
         date: { start: new Date().toISOString() },
       },
       '상태': { select: { name: '신청완료' } },
+      '경로구분': { select: { name: source || '직접' } },
     },
   };
 
