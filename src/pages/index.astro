@@ -409,6 +409,7 @@ const faqs = [
     if (card && card.classList.contains('success-mode')) {
       card.classList.remove('success-mode');
       card.innerHTML = originalCardHTML;
+      attachPhoneFormatter();
     }
   }
 
