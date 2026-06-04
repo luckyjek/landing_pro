@@ -464,14 +464,13 @@ const faqs = [
     function getEventDate() {
       var now = new Date();
       var last = lastThursdayOf(now.getFullYear(), now.getMonth());
-      var event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
-      if (now >= event) {
+      var cutoff = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1, 0, 0, 0);
+      if (now >= cutoff) {
         var nm = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
         var ny = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
         last = lastThursdayOf(ny, nm);
-        event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
       }
-      return event;
+      return last;
     }
 
     var event = getEventDate();
