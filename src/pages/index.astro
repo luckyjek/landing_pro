@@ -452,18 +452,23 @@ const faqs = [
   function updateEventDate() {
     var DAY_KO = ['일', '월', '화', '수', '목', '금', '토'];
 
-    function lastDayOf(year, month) {
-      return new Date(year, month + 1, 0);
+    function lastThursdayOf(year, month) {
+      // month의 마지막 날부터 역순으로 목요일(4) 찾기
+      var d = new Date(year, month + 1, 0);
+      while (d.getDay() !== 4) {
+        d.setDate(d.getDate() - 1);
+      }
+      return d;
     }
 
     function getEventDate() {
       var now = new Date();
-      var last = lastDayOf(now.getFullYear(), now.getMonth());
+      var last = lastThursdayOf(now.getFullYear(), now.getMonth());
       var event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
       if (now >= event) {
         var nm = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
         var ny = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-        last = lastDayOf(ny, nm);
+        last = lastThursdayOf(ny, nm);
         event = new Date(last.getFullYear(), last.getMonth(), last.getDate(), 19, 0, 0);
       }
       return event;
@@ -474,7 +479,7 @@ const faqs = [
     var date  = event.getDate();
     var day   = DAY_KO[event.getDay()];
 
-    var txt = month + '월 ' + date + '일 (' + day + ') 오후 7시';
+    var txt = month + '월 ' + date + '일 ('+ day +')  밤 7시';
     var dateEl = document.getElementById('panel-date-text');
     if (dateEl) dateEl.textContent = txt;
     var mobileEl = document.getElementById('mobile-date-text');
