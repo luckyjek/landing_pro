@@ -1,0 +1,511 @@
+---
+export const prerender = false;
+
+const ADMIN_KEY  = import.meta.env.ADMIN_KEY         ?? '';
+const NOTION_TOKEN = import.meta.env.NOTION_TOKEN       ?? '';
+const NOTION_DB_ID = import.meta.env.NOTION_DATABASE_ID ?? '';
+const COOKIE_NAME  = 'admin_session';
+
+// ── POST: 로그인 처리 ──────────────────────────────────
+if (Astro.request.method === 'POST') {
+  const form     = await Astro.request.formData();
+  const password = (form.get('password') as string) ?? '';
+
+  if (password === ADMIN_KEY) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        'Location': '/admin',
+        'Set-Cookie': `${COOKIE_NAME}=${ADMIN_KEY}; HttpOnly; SameSite=Strict; Path=/; Max-Age=86400`,
+      },
+    });
+  }
+  // 비밀번호 틀림 → 아래 loginError = true 로 폼 재렌더
+}
+
+// ── GET: 쿠키 인증 확인 ──────────────────────────────
+const sessionCookie = Astro.cookies.get(COOKIE_NAME);
+const isAuthed      = !!ADMIN_KEY && sessionCookie?.value === ADMIN_KEY;
+const loginError    = Astro.request.method === 'POST'; // POST인데 여기까지 왔으면 비번 틀림
+
+// ── 인증된 경우 Notion 데이터 페치 ──────────────────
+const PER_PAGE = 20;
+
+interface Entry {
+  id: string; name: string; phone: string;
+  date: string; dateKey: string; dateLabel: string;
+  status: string; source: string;
+}
+
+let allEntries: Entry[] = [];
+
+if (isAuthed) {
+  const results: any[] = [];
+  let cursor: string | undefined;
+  do {
+    const body: Record<string, any> = {
+      page_size: 100,
+      sorts: [{ property: '신청일시', direction: 'descending' }],
+    };
+    if (cursor) body.start_cursor = cursor;
+    const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NOTION_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2022-06-28',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) break;
+    const data = await res.json();
+    results.push(...(data.results ?? []));
+    cursor = data.has_more ? data.next_cursor : undefined;
+  } while (cursor);
+
+  allEntries = results.map(e => {
+    const rawDate  = e.properties['신청일시']?.date?.start ?? '';
+    const dateKey  = rawDate ? rawDate.slice(0, 10) : '';
+    const dateLabel = rawDate
+      ? new Date(rawDate).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '-';
+    return {
+      id:     e.id,
+      name:   e.properties['이름']?.title?.[0]?.text?.content ?? '-',
+      phone:  e.properties['전화번호']?.phone_number ?? '-',
+      date:   rawDate,
+      dateKey,
+      dateLabel,
+      status: e.properties['상태']?.select?.name  ?? '-',
+      source: e.properties['경로구분']?.select?.name ?? '-',
+    };
+  });
+}
+
+// ── 페이지네이션 & 필터 ─────────────────────────────
+const url        = new URL(Astro.request.url);
+const pageParam  = url.searchParams.get('page') ?? '1';
+const dateFilter = url.searchParams.get('date') ?? '';
+
+const dateCounts: Record<string, number> = {};
+for (const e of allEntries) {
+  if (e.dateKey) dateCounts[e.dateKey] = (dateCounts[e.dateKey] ?? 0) + 1;
+}
+const uniqueDates = Object.keys(dateCounts).sort((a, b) => b.localeCompare(a));
+
+const filtered    = dateFilter ? allEntries.filter(e => e.dateKey === dateFilter) : allEntries;
+const total       = filtered.length;
+const totalPages  = Math.max(1, Math.ceil(total / PER_PAGE));
+const currentPage = Math.min(Math.max(1, parseInt(pageParam, 10)), totalPages);
+const entries     = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
+function pageUrl(p: number) {
+  const params = new URLSearchParams({ page: String(p) });
+  if (dateFilter) params.set('date', dateFilter);
+  return `/admin?${params.toString()}`;
+}
+function dateUrl(d: string) {
+  return d ? `/admin?date=${d}&page=1` : '/admin';
+}
+function formatDatetime(iso: string) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  });
+}
+
+const statusColor: Record<string, string> = {
+  '신청완료': '#22c55e',
+  '확인중':   '#f59e0b',
+  '취소':     '#ef4444',
+};
+
+const pageWindow = 5;
+const halfW      = Math.floor(pageWindow / 2);
+let startPage    = Math.max(1, currentPage - halfW);
+let endPage      = Math.min(totalPages, startPage + pageWindow - 1);
+if (endPage - startPage < pageWindow - 1) startPage = Math.max(1, endPage - pageWindow + 1);
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{isAuthed ? '신청자 관리 — BPGroup Admin' : 'Admin 로그인'}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100%;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 14px;
+    }
+
+    /* ── 로그인 화면 ── */
+    .login-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 360px;
+      padding: 44px 36px 40px;
+      background: #111111;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .login-logo {
+      font-size: 32px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .login-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f0f0f0;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .login-sub {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .login-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: #1a1a1a;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      margin-bottom: 16px;
+    }
+    .login-input:focus {
+      border-color: #c9a84c;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    }
+    .login-error {
+      font-size: 12px;
+      color: #ef4444;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: #c9a84c;
+      color: #111;
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+    }
+    .login-btn:hover { background: #dbb95c; transform: translateY(-1px); }
+    .login-btn:active { transform: translateY(0); }
+
+    /* ── 어드민 레이아웃 ── */
+    .admin-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: 60px 1fr;
+      min-height: 100vh;
+    }
+    .admin-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: #111111;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .admin-header-title { font-size: 15px; font-weight: 700; color: #f0f0f0; letter-spacing: 0.04em; }
+    .admin-header-right { display: flex; align-items: center; gap: 16px; }
+    .admin-header-meta  { font-size: 12px; color: #555; }
+    .logout-btn {
+      font-size: 12px;
+      color: #666;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 5px 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .logout-btn:hover { color: #ef4444; border-color: rgba(239,68,68,0.4); }
+
+    /* ── 사이드바 ── */
+    .admin-sidebar {
+      background: #111111;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #444;
+      padding: 0 16px 8px;
+    }
+    .date-btn, .all-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 9px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      color: #999;
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 13px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .all-btn {
+      font-weight: 600;
+      color: #bbb;
+      margin-bottom: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .date-btn:hover, .all-btn:hover { background: rgba(255,255,255,0.04); color: #e0e0e0; }
+    .date-btn.active, .all-btn.active { background: rgba(201,168,76,0.1); color: #c9a84c; }
+    .sidebar-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.06);
+      color: #555;
+    }
+    .date-btn.active .sidebar-badge,
+    .all-btn.active  .sidebar-badge { background: rgba(201,168,76,0.2); color: #c9a84c; }
+
+    /* ── 메인 ── */
+    .admin-main { padding: 24px 28px; overflow-x: auto; }
+    .main-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .main-top-title  { font-size: 16px; font-weight: 700; color: #f0f0f0; }
+    .main-top-count  { font-size: 12px; color: #555; }
+    .main-top-count strong { color: #c9a84c; }
+
+    /* ── 테이블 ── */
+    .entry-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+    .entry-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #444;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .entry-table td {
+      padding: 13px 14px;
+      font-size: 13px;
+      color: #bbb;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      white-space: nowrap;
+    }
+    .entry-table tr:last-child td { border-bottom: none; }
+    .entry-table tbody tr:hover td { background: rgba(255,255,255,0.025); }
+    .num-cell   { color: #444; font-size: 12px; }
+    .name-cell  { color: #f0f0f0; font-weight: 600; }
+    .phone-cell { font-feature-settings: "tnum"; letter-spacing: 0.03em; }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .source-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 50px;
+      font-size: 11px;
+      background: rgba(255,255,255,0.06);
+      color: #777;
+    }
+    .empty-row td { text-align: center; padding: 48px; color: #444; font-size: 14px; }
+
+    /* ── 페이지네이션 ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .pg-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 8px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: #888;
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 13px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.15s, color 0.15s;
+    }
+    .pg-btn:hover   { background: rgba(255,255,255,0.1); color: #e0e0e0; }
+    .pg-btn.active  { background: #c9a84c; color: #111; font-weight: 700; border-color: #c9a84c; }
+    .pg-btn.disabled { opacity: 0.2; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+{!isAuthed ? (
+  <!-- 로그인 화면 -->
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">🔐</div>
+      <h1 class="login-title">BPGroup Admin</h1>
+      <p class="login-sub">신청자 관리 페이지</p>
+      <form method="POST" action="/admin">
+        <label class="login-label">비밀번호</label>
+        {loginError && <p class="login-error">비밀번호가 올바르지 않습니다.</p>}
+        <input
+          class="login-input"
+          type="password"
+          name="password"
+          placeholder="비밀번호 입력"
+          autofocus
+        />
+        <button class="login-btn" type="submit">입장하기</button>
+      </form>
+    </div>
+  </div>
+) : (
+  <!-- 어드민 대시보드 -->
+  <div class="admin-wrap">
+    <header class="admin-header">
+      <span class="admin-header-title">🗂 BPGroup 신청자 관리</span>
+      <div class="admin-header-right">
+        <span class="admin-header-meta">총 {allEntries.length}명 신청</span>
+        <a href="/admin/logout" class="logout-btn">로그아웃</a>
+      </div>
+    </header>
+
+    <aside class="admin-sidebar">
+      <a href="/admin" class={`all-btn ${!dateFilter ? 'active' : ''}`}>
+        전체 보기
+        <span class="sidebar-badge">{allEntries.length}</span>
+      </a>
+      <p class="sidebar-section-title">날짜별</p>
+      {uniqueDates.map(d => {
+        const label = new Date(d + 'T00:00:00').toLocaleDateString('ko-KR', {
+          month: 'long', day: 'numeric', weekday: 'short',
+        });
+        return (
+          <a href={dateUrl(d)} class={`date-btn ${dateFilter === d ? 'active' : ''}`}>
+            <span>{label}</span>
+            <span class="sidebar-badge">{dateCounts[d]}</span>
+          </a>
+        );
+      })}
+    </aside>
+
+    <main class="admin-main">
+      <div class="main-top">
+        <span class="main-top-title">
+          {dateFilter
+            ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
+            : '전체 신청자'
+          }
+        </span>
+        <span class="main-top-count">
+          <strong>{total}</strong>명 · {currentPage}/{totalPages} 페이지
+        </span>
+      </div>
+
+      <table class="entry-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>신청일시</th>
+            <th>경로</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.length === 0 ? (
+            <tr class="empty-row"><td colspan="6">신청 내역이 없습니다.</td></tr>
+          ) : entries.map((e, i) => {
+            const rowNum  = (currentPage - 1) * PER_PAGE + i + 1;
+            const sColor  = statusColor[e.status] ?? '#888';
+            return (
+              <tr>
+                <td class="num-cell">{rowNum}</td>
+                <td class="name-cell">{e.name}</td>
+                <td class="phone-cell">{e.phone}</td>
+                <td>{formatDatetime(e.date)}</td>
+                <td><span class="source-badge">{e.source}</span></td>
+                <td>
+                  <span class="status-badge" style={`background:${sColor}22;color:${sColor};`}>
+                    {e.status}
+                  </span>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {totalPages > 1 && (
+        <nav class="pagination">
+          <a href={pageUrl(1)}              class={`pg-btn ${currentPage === 1          ? 'disabled' : ''}`}>«</a>
+          <a href={pageUrl(currentPage - 1)} class={`pg-btn ${currentPage === 1          ? 'disabled' : ''}`}>‹</a>
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map(p => (
+            <a href={pageUrl(p)} class={`pg-btn ${p === currentPage ? 'active' : ''}`}>{p}</a>
+          ))}
+          <a href={pageUrl(currentPage + 1)} class={`pg-btn ${currentPage === totalPages ? 'disabled' : ''}`}>›</a>
+          <a href={pageUrl(totalPages)}      class={`pg-btn ${currentPage === totalPages ? 'disabled' : ''}`}>»</a>
+        </nav>
+      )}
+    </main>
+  </div>
+)}
+
+</body>
+</html>
