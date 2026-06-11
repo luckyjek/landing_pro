@@ -121,6 +121,11 @@ const statusColor: Record<string, string> = {
   '취소':     '#ef4444',
 };
 
+const sourceColor: Record<string, string> = {
+  'kingmaker': '#c9a84c',
+  'sinsa':     '#3b82f6',
+};
+
 const pageWindow = 5;
 const halfW      = Math.floor(pageWindow / 2);
 let startPage    = Math.max(1, currentPage - halfW);
@@ -480,7 +485,14 @@ if (endPage - startPage < pageWindow - 1) startPage = Math.max(1, endPage - page
                 <td class="name-cell">{e.name}</td>
                 <td class="phone-cell">{e.phone}</td>
                 <td>{formatDatetime(e.date)}</td>
-                <td><span class="source-badge">{e.source}</span></td>
+                <td>
+                  {(() => {
+                    const sc = sourceColor[e.source];
+                    return sc
+                      ? <span class="source-badge" style={`background:${sc}22;color:${sc};`}>{e.source}</span>
+                      : <span class="source-badge">{e.source}</span>;
+                  })()}
+                </td>
                 <td>
                   <span class="status-badge" style={`background:${sColor}22;color:${sColor};`}>
                     {e.status}
