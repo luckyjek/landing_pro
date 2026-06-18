@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>크라운코드 | 황제가 되는 본질</title>
+    <link>https://www.crowncode.site</link>
+    <atom:link href="https://www.crowncode.site/rss" rel="self" type="application/rss+xml"/>
+    <description>세상은 동화가 아니니까 동화같은 세상을 만들어야지</description>
+    <language>ko</language>
+    <lastBuildDate>Wed, 18 Jun 2026 00:00:00 +0900</lastBuildDate>
+    <item>
+      <title>크라운코드 월말특강 | 남자의 품격을 바꾸는 하루</title>
+      <link>https://www.crowncode.site</link>
+      <guid>https://www.crowncode.site</guid>
+      <description>매력, 심리, 브랜딩, 인간관계, 부의마인드 — 월 3,000만원 대표의 5가지 핵심 커리큘럼</description>
+      <pubDate>Wed, 18 Jun 2026 00:00:00 +0900</pubDate>
+    </item>
+  </channel>
+</rss>

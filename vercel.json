@@ -1,7 +1,8 @@
 {
   "rewrites": [
     { "source": "/sinsa",     "destination": "/" },
-    { "source": "/kingmaker", "destination": "/" }
+    { "source": "/kingmaker", "destination": "/" },
+    { "source": "/rss",       "destination": "/rss.xml" }
   ],
   "headers": [
     {
