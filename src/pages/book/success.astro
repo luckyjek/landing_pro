@@ -1,0 +1,237 @@
+---
+export const prerender = false;
+
+import LightLayout from '../../layouts/LightLayout.astro';
+
+const N8N_WEBHOOK = 'https://crowncode.app.n8n.cloud/webhook-test/238eec7d-71ce-4ce5-a8a8-37c2682639bd';
+
+const paymentKey    = Astro.url.searchParams.get('paymentKey') ?? '';
+const orderId       = Astro.url.searchParams.get('orderId') ?? '';
+const amount        = Number(Astro.url.searchParams.get('amount') ?? '0');
+const customerEmail = Astro.url.searchParams.get('email') ?? '';
+
+let confirmed = false;
+let errorMsg  = '';
+
+if (!paymentKey || !orderId || !amount) {
+  errorMsg = '잘못된 접근입니다.';
+} else {
+  const secretKey = import.meta.env.TOSS_SECRET_KEY;
+  const encoded   = Buffer.from(secretKey + ':').toString('base64');
+
+  try {
+    const res = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${encoded}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ paymentKey, orderId, amount }),
+    });
+
+    if (res.ok) {
+      const tossData = await res.json();
+      confirmed = true;
+      if (customerEmail) {
+        fetch(N8N_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerEmail,
+            customerName: tossData.customerName ?? '',
+            planName: '더 크라운코드',
+            amount,
+            orderId,
+            paymentMethod: tossData.method ?? '',
+            cardCompany: tossData.card?.company ?? '',
+            paidAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+          }),
+        }).catch(() => {});
+      }
+    } else {
+      const err = await res.json();
+      errorMsg = err.message || '결제 검증에 실패했습니다.';
+    }
+  } catch {
+    errorMsg = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+  }
+}
+---
+
+<LightLayout title="결제 완료 | 더 크라운코드" description="결제가 완료되었습니다.">
+
+<div class="success-page">
+
+  {confirmed ? (
+    <div class="result-card">
+      <div class="emoji">🎉</div>
+      <h1 class="result-title">결제가 완료됐습니다!</h1>
+      <p class="result-desc">
+        <strong>더 크라운코드</strong>를 구매해주셔서 감사합니다.<br />
+        아래 버튼으로 바로 읽어보세요.
+      </p>
+
+      <a
+        href="https://docs.google.com/document/d/1j8N0_FS0ho3iqAD8S9XE8cxXbNA_Togvy9PpSnCjFvY/edit"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary"
+      >
+        📖 더 크라운코드 읽으러 가기
+      </a>
+
+      <div class="order-info">
+        <p>주문번호: <code>{orderId}</code></p>
+        <p>결제금액: ₩{amount.toLocaleString()}</p>
+      </div>
+
+      <div class="review-notice">
+        <p class="review-notice-title">🎁 후기 이벤트</p>
+        <p>14일 이내 크라운코드 카페에 후기 작성 시 <strong>모든 서비스 9% 할인 쿠폰</strong> 증정!</p>
+      </div>
+
+      <a href="https://open.kakao.com/o/sW27Jeth" target="_blank" rel="noopener noreferrer" class="kakao-link">
+        문의는 오픈 카카오톡 채널로 →
+      </a>
+    </div>
+  ) : (
+    <div class="result-card result-card--error">
+      <div class="emoji">⚠️</div>
+      <h1 class="result-title">결제에 실패했습니다</h1>
+      <p class="result-desc">{errorMsg}</p>
+      <a href="/book" class="btn-primary">← 다시 시도하기</a>
+    </div>
+  )}
+
+</div>
+
+</LightLayout>
+
+<style>
+.success-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #1a1a1a;
+}
+
+.result-card {
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-card--error {
+  border-color: rgba(239,68,68,0.3);
+}
+
+.emoji {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.result-title {
+  font-size: 26px;
+  color: #f0f0f0;
+  line-height: 1.3;
+}
+
+.result-desc {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+}
+
+.result-desc strong { color: #C9A84C; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 24px;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.btn-primary:hover { background: #e8e8e8; transform: translateY(-2px); }
+
+.order-info {
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-info p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+
+.order-info code {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.review-notice {
+  padding: 16px 20px;
+  background: rgba(201,168,76,0.07);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-notice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #C9A84C;
+}
+
+.review-notice p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+
+.review-notice strong { color: #f0f0f0; }
+
+.kakao-link {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.kakao-link:hover { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 480px) {
+  .result-card { padding: 36px 24px; }
+  .result-title { font-size: 22px; }
+}
+</style>

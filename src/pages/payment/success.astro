@@ -1,0 +1,185 @@
+---
+export const prerender = false;
+
+import LightLayout from '../../layouts/LightLayout.astro';
+
+const planNames: Record<string, string> = {
+  'world-class': '월드클래스 아카데미',
+  'global-seminar': '글로벌 세미나',
+  'main-course': '메인과정',
+};
+
+const N8N_WEBHOOK = 'https://crowncode.app.n8n.cloud/webhook-test/238eec7d-71ce-4ce5-a8a8-37c2682639bd';
+
+const paymentKey    = Astro.url.searchParams.get('paymentKey') ?? '';
+const orderId       = Astro.url.searchParams.get('orderId') ?? '';
+const amount        = Number(Astro.url.searchParams.get('amount') ?? '0');
+const plan          = Astro.url.searchParams.get('plan') ?? '';
+const customerEmail = Astro.url.searchParams.get('email') ?? '';
+const planName      = planNames[plan] ?? '과정';
+
+let confirmed = false;
+let errorMsg  = '';
+
+if (!paymentKey || !orderId || !amount) {
+  errorMsg = '잘못된 접근입니다.';
+} else {
+  const secretKey = import.meta.env.TOSS_SECRET_KEY;
+  const encoded   = Buffer.from(secretKey + ':').toString('base64');
+  try {
+    const res = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${encoded}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ paymentKey, orderId, amount }),
+    });
+    if (res.ok) {
+      const tossData = await res.json();
+      confirmed = true;
+      if (customerEmail) {
+        fetch(N8N_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerEmail,
+            customerName: tossData.customerName ?? '',
+            planName,
+            amount,
+            orderId,
+            paymentMethod: tossData.method ?? '',
+            cardCompany: tossData.card?.company ?? '',
+            paidAt: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+          }),
+        }).catch(() => {});
+      }
+    } else {
+      const err = await res.json();
+      errorMsg = err.message || '결제 검증에 실패했습니다.';
+    }
+  } catch {
+    errorMsg = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+  }
+}
+---
+
+<LightLayout title="결제 완료 | 블랙포인트그룹" description="결제가 완료되었습니다.">
+
+<div class="success-page">
+  {confirmed ? (
+    <div class="result-card">
+      <div class="emoji">🎉</div>
+      <h1 class="result-title">결제가 완료됐습니다!</h1>
+      <p class="result-desc">
+        <strong>{planName}</strong>에 오신 것을 환영합니다.<br />
+        24시간 이내로 커뮤니티 초대 안내를 보내드립니다.
+      </p>
+      <div class="order-info">
+        <p>과정: <strong>{planName}</strong></p>
+        <p>주문번호: <code>{orderId}</code></p>
+        <p>결제금액: <strong>₩{amount.toLocaleString('ko-KR')}</strong></p>
+      </div>
+      <a href="https://open.kakao.com/o/sW27Jeth" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        카카오 오픈채팅으로 입장 안내 받기
+      </a>
+      <a href="/payment" class="back-link">← 수강 신청 페이지로 돌아가기</a>
+    </div>
+  ) : (
+    <div class="result-card result-card--error">
+      <div class="emoji">⚠️</div>
+      <h1 class="result-title">결제에 실패했습니다</h1>
+      <p class="result-desc">{errorMsg}</p>
+      <a href="/payment" class="btn-primary">← 다시 시도하기</a>
+    </div>
+  )}
+</div>
+
+</LightLayout>
+
+<style>
+.success-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #111111;
+}
+
+.result-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  padding: 52px 44px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.result-card--error { border-color: rgba(239,68,68,0.3); }
+
+.emoji { font-size: 56px; line-height: 1; }
+
+.result-title { font-size: 26px; color: #f0f0f0; line-height: 1.3; }
+
+.result-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.8; }
+.result-desc strong { color: #C9A84C; }
+
+.order-info {
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-info p { font-size: 14px; color: rgba(255,255,255,0.5); }
+.order-info strong { color: #f0f0f0; }
+.order-info code {
+  font-size: 12px;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: rgba(255,255,255,0.6);
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 24px;
+  background: #C9A84C;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+}
+
+.btn-primary:hover { background: #d4b45e; transform: translateY(-2px); }
+
+.back-link {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 480px) {
+  .result-card { padding: 36px 24px; }
+  .result-title { font-size: 22px; }
+}
+</style>

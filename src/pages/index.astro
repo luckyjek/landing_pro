@@ -87,6 +87,15 @@ const faqs = [
       />
       <span class="header-brand-name">Crowncode</span>
     </a>
+    <nav class="site-nav">
+      <a href="/book" class="site-nav-link site-nav-book" id="book-nav-link">
+        📕 전자책
+        <span class="book-new-badge" id="book-new-badge">
+          <span class="new-arrow">↑</span>
+          <span class="new-text">NEW</span>
+        </span>
+      </a>
+    </nav>
   </div>
 </header>
 
@@ -706,6 +715,7 @@ const faqs = [
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .site-header-logo {
@@ -720,6 +730,64 @@ const faqs = [
   width: auto;
   display: block;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.55));
+}
+
+.site-nav { display: flex; align-items: center; gap: 24px; }
+.site-nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-nav-link:hover { color: #f0f0f0; }
+
+.site-nav-book {
+  position: relative;
+  display: inline-block;
+  color: #f0f0f0;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.book-new-badge {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  animation: fadeOutBadge 0s 10s forwards;
+  white-space: nowrap;
+}
+
+.new-arrow {
+  font-size: 11px;
+  color: #ECAF57;
+  animation: bounceUp 0.7s ease-in-out infinite;
+  line-height: 1;
+}
+
+.new-text {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: #ef4444;
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1.4;
+}
+
+@keyframes bounceUp {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes fadeOutBadge {
+  to { opacity: 0; pointer-events: none; width: 0; overflow: hidden; margin: 0; padding: 0; }
 }
 
 .header-brand-name {

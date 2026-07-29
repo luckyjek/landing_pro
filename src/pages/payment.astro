@@ -1,0 +1,758 @@
+---
+import LightLayout from '../layouts/LightLayout.astro';
+
+const plans = [
+  {
+    id: "world-class",
+    tag: "최상위 과정",
+    name: "월드클래스 아카데미",
+    sub: "World Class Academy",
+    price: 33000000,
+    priceLabel: "3,300만원",
+    period: "평생",
+    badge: "👑 PREMIUM",
+    color: "gold",
+    desc: "블랙포인트그룹이 직접 운영하는 최상위 아카데미. 글로벌 네트워크와 1:1 멘토링, 모든 과정 무제한 접근.",
+    includes: [
+      "모든 하위 과정 무제한 포함",
+      "1:1 전담 멘토링 (무제한)",
+      "글로벌 세미나 전석 초청",
+      "해외 네트워킹 투어 동행",
+      "VIP 전용 오프라인 모임",
+      "블랙포인트그룹 내부 전략 공개",
+      "평생 업데이트 및 신규 콘텐츠",
+    ],
+    orderId: "WORLD_CLASS",
+    orderName: "월드클래스 아카데미 평생 멤버십",
+  },
+  {
+    id: "global-seminar",
+    tag: "글로벌 과정",
+    name: "글로벌 세미나",
+    sub: "Global Seminar",
+    price: 9900000,
+    priceLabel: "990만원",
+    period: "평생",
+    badge: "🌐 GLOBAL",
+    color: "silver",
+    desc: "해외 현지에서 진행되는 집중 세미나. 글로벌 마인드셋과 실전 네트워킹을 직접 체험합니다.",
+    includes: [
+      "메인과정 전체 포함",
+      "해외 현지 집중 세미나 (1회)",
+      "글로벌 인맥 네트워킹",
+      "현지 VIP 미팅 동행",
+      "세미나 녹화본 평생 제공",
+      "전용 해외 커뮤니티 입장",
+    ],
+    orderId: "GLOBAL_SEMINAR",
+    orderName: "글로벌 세미나 평생 멤버십",
+  },
+  {
+    id: "main-course",
+    tag: "기본 과정",
+    name: "메인과정",
+    sub: "Main Course",
+    price: 10,
+    priceLabel: "10원",
+    period: "평생",
+    badge: "⚡ CORE",
+    color: "bronze",
+    desc: "블랙러브 커뮤니티의 핵심 커리큘럼. 부, 인기, 인간관계를 완전히 재설계하는 평생 과정.",
+    includes: [
+      "블랙러브 커뮤니티 평생 입장",
+      "전체 커리큘럼 무제한 수강",
+      "오프라인 멤버 전용 모임",
+      "월별 라이브 Q&A 세션",
+      "전용 멤버 커뮤니티 채널",
+      "신규 콘텐츠 지속 업데이트",
+    ],
+    orderId: "MAIN_COURSE",
+    orderName: "메인과정 평생 멤버십",
+  },
+];
+---
+
+<LightLayout title="수강 신청 | 블랙포인트그룹" description="월드클래스 아카데미, 글로벌 세미나, 메인과정 — 블랙포인트그룹의 3가지 프리미엄 과정">
+<Fragment slot="head">
+  <script is:inline src="https://js.tosspayments.com/v2/standard"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+</Fragment>
+
+<!-- 헤더 -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/" class="site-header-logo">
+      <img
+        src="https://cdn.imweb.me/upload/S2026022631349774b0b42/069ca0194d408.png"
+        alt="크라운코드 로고"
+        class="header-logo-img"
+      />
+      <span class="header-brand-name">Crowncode</span>
+    </a>
+  </div>
+</header>
+
+<!-- 히어로 -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Black Point Group</p>
+    <h1 class="hero-title">황제가 되는 여정,<br /><em>3가지 경로</em></h1>
+    <p class="hero-desc">
+      블랙포인트그룹의 모든 과정은 <strong>평생 멤버십</strong>입니다.<br />
+      한 번의 결정이 평생을 바꿉니다.
+    </p>
+  </div>
+</section>
+
+<!-- 플랜 카드 -->
+<section class="plans-section">
+  <div class="plans-grid">
+    {plans.map((plan) => (
+      <div class={`plan-card plan-card--${plan.color}`}>
+
+        <div class="plan-top">
+          <span class="plan-badge">{plan.badge}</span>
+          <p class="plan-tag">{plan.tag}</p>
+          <h2 class="plan-name">{plan.name}</h2>
+          <p class="plan-sub">{plan.sub}</p>
+          <p class="plan-desc">{plan.desc}</p>
+        </div>
+
+        <div class="plan-price-block">
+          <span class="plan-price">{plan.priceLabel}</span>
+          <span class="plan-period">/ {plan.period}</span>
+        </div>
+
+        <ul class="plan-includes">
+          {plan.includes.map((item) => (
+            <li>
+              <span class="check-icon">✓</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <button
+          class="plan-cta-btn"
+          onclick={`requestPayment('${plan.id}', ${plan.price}, '${plan.orderName}')`}
+        >
+          {plan.name} 신청하기
+        </button>
+
+        <p class="plan-contact">
+          상담 문의: <a href="https://open.kakao.com/o/sW27Jeth" target="_blank" rel="noopener noreferrer">카카오 오픈채팅</a>
+        </p>
+
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- 공통 안내 -->
+<section class="notice-section">
+  <div class="notice-inner">
+    <h3 class="notice-title">결제 전 꼭 확인해주세요</h3>
+    <ul class="notice-list">
+      <li>모든 과정은 <strong>평생 멤버십</strong>으로 제공됩니다.</li>
+      <li>결제 완료 후 <strong>24시간 이내</strong> 커뮤니티 초대 안내를 드립니다.</li>
+      <li>상위 과정 결제 시 하위 과정이 <strong>자동 포함</strong>됩니다.</li>
+      <li>결제 관련 문의는 카카오 오픈채팅으로 연락해주세요.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 이메일 입력 모달 -->
+<div id="email-modal" class="email-modal-overlay" aria-hidden="true">
+  <div class="email-modal-card" role="dialog" aria-modal="true">
+    <button class="email-modal-close" onclick="closeEmailModal()" aria-label="닫기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="email-modal-badge" id="modal-plan-name"></p>
+    <h2 class="email-modal-title">결제 안내 이메일 주소</h2>
+    <p class="email-modal-desc">결제 완료 후 확인 메일을 보내드립니다.<br/>정확한 이메일 주소를 입력해주세요.</p>
+    <input type="email" id="email-input" class="email-input" placeholder="example@email.com" autocomplete="email" />
+    <p id="email-error" class="email-error"></p>
+    <button class="email-confirm-btn" id="email-confirm-btn" onclick="proceedToPayment()">결제하기</button>
+  </div>
+</div>
+
+<!-- 푸터 -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>블랙포인트그룹(BPGroup) | 대표 이하림</p>
+    <p>사업자등록번호: 513-45-01146</p>
+    <p>Tel : 032-566-1369 &nbsp;|&nbsp; E-mail: contact@crowncode.site</p>
+    <p>Address: 인천광역시 연수구 인천타워대로 301, B동 716-B13호 (송도센텀하이브)</p>
+    <p class="footer-copy">Copyright 2026 All Rights Reserved.</p>
+  </div>
+</footer>
+
+</LightLayout>
+
+<script is:inline>
+  var TOSS_CLIENT_KEY = 'test_ck_Ba5PzR0ArnL5OeapQMRX3vmYnNeD';
+  var _currentPlan = null;
+
+  function requestPayment(planId, amount, orderName) {
+    _currentPlan = { planId: planId, amount: amount, orderName: orderName };
+    document.getElementById('modal-plan-name').textContent = orderName;
+    document.getElementById('email-input').value = '';
+    document.getElementById('email-error').textContent = '';
+    var modal = document.getElementById('email-modal');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-open');
+    setTimeout(function() { document.getElementById('email-input').focus(); }, 80);
+  }
+
+  function closeEmailModal() {
+    var modal = document.getElementById('email-modal');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+    _currentPlan = null;
+  }
+
+  async function proceedToPayment() {
+    var email = document.getElementById('email-input').value.trim();
+    var errEl = document.getElementById('email-error');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = '올바른 이메일 주소를 입력해주세요.';
+      return;
+    }
+    errEl.textContent = '';
+    var btn = document.getElementById('email-confirm-btn');
+    btn.disabled = true;
+    btn.textContent = '결제창 여는 중...';
+    var tp = window.TossPayments;
+    if (!tp) {
+      alert('결제 모듈이 로딩 중입니다. 잠시 후 다시 눌러주세요.');
+      btn.disabled = false;
+      btn.textContent = '결제하기';
+      return;
+    }
+    var plan = _currentPlan;
+    closeEmailModal();
+    try {
+      var tossPayments = await tp(TOSS_CLIENT_KEY);
+      var payment = tossPayments.payment({ customerKey: '@@ANONYMOUS' });
+      var orderId = plan.planId.toUpperCase() + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      await payment.requestPayment({
+        method: 'CARD',
+        amount: { currency: 'KRW', value: plan.amount },
+        orderId: orderId,
+        orderName: plan.orderName,
+        customerEmail: email,
+        successUrl: window.location.origin + '/payment/success?plan=' + plan.planId + '&email=' + encodeURIComponent(email),
+        failUrl: window.location.origin + '/payment',
+      });
+    } catch (err) {
+      console.error('[Toss] 결제 오류:', err);
+      if (!err || err.code !== 'USER_CANCEL') {
+        alert('결제 오류: ' + (err && err.message ? err.message : String(err)));
+      }
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '결제하기';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('email-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeEmailModal();
+    });
+    document.getElementById('email-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') proceedToPayment();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeEmailModal();
+    });
+  });
+</script>
+
+<style>
+@font-face {
+  font-family: "Amphora";
+  src: url("/fonts/Amphora-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── PRETENDARD 전체 적용 ── */
+.site-header,
+.site-header *,
+.hero,
+.hero *,
+.plans-section,
+.plans-section *,
+.notice-section,
+.notice-section *,
+.site-footer,
+.site-footer * {
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a1a1a;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 70px;
+}
+
+.site-header-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.site-header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.header-logo-img { height: 60px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.55)); }
+.header-brand-name { font-family: "Amphora", sans-serif; font-size: 24px; font-weight: normal; color: #f0f0f0; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #0f0f0f 0%, #1a1400 50%, #0f0f0f 100%);
+  padding: 80px 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+
+.hero-inner { max-width: 640px; margin: 0 auto; }
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(32px, 5vw, 52px);
+  color: #f0f0f0;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.hero-title em {
+  color: #C9A84C;
+  font-style: normal;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.8;
+}
+
+.hero-desc strong { color: #f0f0f0; }
+
+/* ── PLANS SECTION ── */
+.plans-section {
+  background: #111111;
+  padding: 72px 24px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* ── PLAN CARD ── */
+.plan-card {
+  background: #1a1a1a;
+  border-radius: 20px;
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.plan-card:hover {
+  transform: translateY(-6px);
+}
+
+/* gold — 월드클래스 */
+.plan-card--gold {
+  border: 2px solid rgba(201,168,76,0.5);
+  box-shadow: 0 0 40px rgba(201,168,76,0.12);
+}
+
+.plan-card--gold:hover {
+  box-shadow: 0 20px 60px rgba(201,168,76,0.22);
+}
+
+/* silver — 글로벌 */
+.plan-card--silver {
+  border: 2px solid rgba(180,180,200,0.3);
+  box-shadow: 0 0 20px rgba(180,180,200,0.05);
+}
+
+.plan-card--silver:hover {
+  box-shadow: 0 20px 60px rgba(180,180,200,0.12);
+}
+
+/* bronze — 메인 */
+.plan-card--bronze {
+  border: 2px solid rgba(180,120,60,0.3);
+  box-shadow: 0 0 20px rgba(180,120,60,0.05);
+}
+
+.plan-card--bronze:hover {
+  box-shadow: 0 20px 60px rgba(180,120,60,0.12);
+}
+
+/* ── CARD CONTENT ── */
+.plan-top { display: flex; flex-direction: column; gap: 8px; }
+
+.plan-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.plan-card--gold .plan-badge { background: rgba(201,168,76,0.15); color: #C9A84C; }
+.plan-card--silver .plan-badge { background: rgba(180,180,200,0.1); color: #b4b4c8; }
+.plan-card--bronze .plan-badge { background: rgba(180,120,60,0.1); color: #b47840; }
+
+.plan-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+}
+
+.plan-name {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  color: #f0f0f0;
+  line-height: 1.3;
+}
+
+.plan-sub {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.plan-card--gold .plan-sub { color: #C9A84C; }
+.plan-card--silver .plan-sub { color: #b4b4c8; }
+.plan-card--bronze .plan-sub { color: #b47840; }
+
+.plan-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  margin-top: 4px;
+}
+
+/* ── PRICE ── */
+.plan-price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.plan-card--gold .plan-price-block { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); }
+.plan-card--silver .plan-price-block { background: rgba(180,180,200,0.05); border: 1px solid rgba(180,180,200,0.12); }
+.plan-card--bronze .plan-price-block { background: rgba(180,120,60,0.05); border: 1px solid rgba(180,120,60,0.12); }
+
+.plan-price {
+  font-size: 30px;
+  font-weight: 700;
+  color: #f0f0f0;
+  line-height: 1;
+}
+
+.plan-card--gold .plan-price { color: #C9A84C; }
+
+.plan-period {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── INCLUDES ── */
+.plan-includes {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.plan-includes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.5;
+}
+
+.check-icon {
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.plan-card--gold .check-icon { color: #C9A84C; }
+.plan-card--silver .check-icon { color: #b4b4c8; }
+.plan-card--bronze .check-icon { color: #b47840; }
+
+/* ── CTA BUTTON ── */
+.plan-cta-btn {
+  width: 100%;
+  padding: 16px 20px;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.22s;
+  letter-spacing: 0.01em;
+}
+
+.plan-card--gold .plan-cta-btn {
+  background: #C9A84C;
+  color: #111111;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+}
+
+.plan-card--gold .plan-cta-btn:hover {
+  background: #d4b45e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201,168,76,0.55);
+}
+
+.plan-card--silver .plan-cta-btn {
+  background: rgba(180,180,200,0.15);
+  color: #f0f0f0;
+  border: 1.5px solid rgba(180,180,200,0.3);
+}
+
+.plan-card--silver .plan-cta-btn:hover {
+  background: rgba(180,180,200,0.25);
+  transform: translateY(-2px);
+}
+
+.plan-card--bronze .plan-cta-btn {
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+
+.plan-card--bronze .plan-cta-btn:hover {
+  background: #e8e8e8;
+  transform: translateY(-2px);
+}
+
+/* ── CONTACT ── */
+.plan-contact {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+}
+
+.plan-contact a {
+  color: rgba(255,255,255,0.45);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── NOTICE ── */
+.notice-section {
+  background: #0f0f0f;
+  padding: 56px 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.notice-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.notice-title {
+  font-size: 18px;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.notice-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notice-list li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+}
+
+.notice-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: #C9A84C;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.notice-list strong { color: rgba(255,255,255,0.8); }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: #0a0a0a;
+  padding: 40px 24px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer p { font-size: 12px; color: rgba(255,255,255,0.25); line-height: 1.6; }
+.footer-copy { margin-top: 8px; font-size: 11px; color: rgba(255,255,255,0.15) !important; }
+
+/* ── EMAIL MODAL ── */
+.email-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.75);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.email-modal-overlay.is-open { display: flex; }
+
+.email-modal-card {
+  background: #1f1f1f;
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.email-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  padding: 4px;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+.email-modal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #C9A84C;
+}
+
+.email-modal-title {
+  font-size: 20px;
+  color: #f0f0f0;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  font-weight: 700;
+}
+
+.email-modal-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+.email-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: #f0f0f0;
+  font-size: 15px;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.email-input:focus { border-color: rgba(201,168,76,0.6); }
+.email-input::placeholder { color: rgba(255,255,255,0.25); }
+
+.email-error {
+  font-size: 13px;
+  color: #ef4444;
+  min-height: 18px;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+.email-confirm-btn {
+  width: 100%;
+  padding: 16px;
+  background: #C9A84C;
+  color: #111111;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+}
+
+.email-confirm-btn:hover { background: #d4b45e; transform: translateY(-2px); }
+.email-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .plans-grid { grid-template-columns: 1fr; max-width: 480px; }
+  .hero { padding: 60px 24px; }
+}
+
+@media (max-width: 480px) {
+  .plan-card { padding: 28px 20px; }
+  .plan-price { font-size: 26px; }
+}
+</style>

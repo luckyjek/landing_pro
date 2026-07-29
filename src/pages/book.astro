@@ -1,0 +1,1572 @@
+---
+import LightLayout from '../layouts/LightLayout.astro';
+
+// 토스 테스트 클라이언트 키 (공개키 — 프론트에 노출 가능)
+const TOSS_CLIENT_KEY = "test_ck_Ba5PzR0ArnL5OeapQMRX3vmYnNeD";
+const BOOK_NAME = "더 크라운코드";
+const BOOK_PRICE = 5500;
+
+const priceHistory = [
+  { date: "2025.09.30", price: "500원" },
+  { date: "2025.10.08", price: "1,000원" },
+  { date: "2025.11.12", price: "2,500원" },
+  { date: "2025.11.17", price: "4,500원" },
+  { date: "현재", price: "5,500원", current: true },
+  { date: "최종", price: "100,000원", final: true },
+];
+
+const painPoints = [
+  "단기간에 돈 쓸어담는 방법은 없나?",
+  "로이는 어떻게 부와 인기를 다 정복했지?",
+  "신사는 어떻게 인기도 얻고 몸까지 좋지?",
+  "인기, 돈, 언어, 몸 다 한번에 얻는 방법은 없을까?",
+];
+
+const goals = [
+  {
+    num: "01",
+    title: "이상형의 외국 모델과 교제하기",
+    
+    desc: "사실 외국 이성을 만나는 건 쉬워요. 진짜 어려운 건 이상형의 외국 모델과 교제하는 것입니다. 로이와 신사가 직접 실증한 방법을 담았습니다.",
+  },
+  {
+    num: "02",
+    title: "진짜 자산가가 되기",
+    
+    desc: "돈을 버는 건 어렵지 않습니다. 진짜 어려운 건 '진짜 자산가'가 되는 것이죠. 수익을 구조화하고 복리로 불리는 황제의 사고방식을 공개합니다.",
+  },
+  {
+    num: "03",
+    title: "엘리트 운동선수의 몸 가지기",
+    
+    desc: "건강해지는 건 쉽습니다. 하지만 엘리트 운동선수 수준의 몸을 갖는 건 다른 이야기입니다. 신사의 특급 루틴을 그대로 담았습니다.",
+  },
+];
+---
+
+<LightLayout title="더 크라운코드 | 황제가 되는 본질 7가지" description="누구나 부와 인기를 모두 얻는 황제의 코드 7가지. 300명이 넘는 남자가 선택한 책.">
+<Fragment slot="head">
+  <script is:inline src="https://js.tosspayments.com/v2/standard"></script>
+</Fragment>
+
+<!-- 사이트 헤더 -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/" class="site-header-logo">
+      <img
+        src="https://cdn.imweb.me/upload/S2026022631349774b0b42/069ca0194d408.png"
+        alt="크라운코드 로고"
+        class="header-logo-img"
+      />
+      <span class="header-brand-name">Crowncode</span>
+    </a>
+    <nav class="site-nav">
+      <a href="/book" class="site-nav-link site-nav-link--active">📕 전자책</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+  <!-- LEFT: 콘텐츠 영역 -->
+  <main class="content-left">
+
+    <!-- 책 표지 -->
+    <div class="book-cover-wrap">
+      <img src="/images/harim_01.png" alt="더 크라운코드 — 황제가 되는 본질 7가지" class="book-cover-img" />
+    </div>
+
+    <!-- 탭 네비게이션 -->
+    <div class="tab-nav">
+      <button class="tab-btn tab-active" data-tab="book" onclick="switchTab('book')">책 소개</button>
+      <button class="tab-btn" data-tab="author" onclick="switchTab('author')">저자 소개</button>
+    </div>
+
+    <!-- 책 소개 탭 -->
+    <div id="tab-book" class="tab-content">
+
+      <!-- 리뷰 섹션 -->
+      <section class="section-hero">
+
+        <div class="review-gallery">
+          <div class="review-item">
+            <img src="/images/intro.png" alt="더 크라운코드 소개" />
+          </div>
+          <a href="https://cafe.naver.com/kingdomofuniverse/663?tc=shared_link" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/01_riview.png" alt="독자 후기 01" />
+          </a>
+          <div class="review-item">
+            <img src="/images/02_riviewpng.png" alt="독자 후기 02" />
+          </div>
+          <a href="https://cafe.naver.com/kingdomofuniverse/583" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/03_riview.png" alt="독자 후기 03" />
+          </a>
+          <a href="https://cafe.naver.com/kingdomofuniverse/775" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/04_riview.png" alt="독자 후기 04" />
+          </a>
+          <div class="review-item">
+            <img src="/images/05_riview.png" alt="독자 후기 05" />
+          </div>
+          <div class="review-item">
+            <img src="/images/06_riview.png" alt="독자 후기 06" />
+          </div>
+          <div class="review-item">
+            <img src="/images/07_riview.png" alt="독자 후기 07" />
+          </div>
+          <div class="review-item">
+            <img src="/images/08_riview.png" alt="독자 후기 08" />
+          </div>
+          <div class="review-item">
+            <img src="/images/09_riview.png" alt="독자 후기 09" />
+          </div>
+          <div class="review-item">
+            <img src="/images/10_riview.png" alt="독자 후기 10" />
+          </div>
+          <div class="review-item">
+            <img src="/images/11_image.png" alt="독자 후기 11" />
+          </div>
+          <div class="review-item">
+            <img src="/images/12_image.png" alt="독자 후기 12" />
+          </div>
+          <div class="review-item">
+            <img src="/images/13_image.png" alt="독자 후기 13" />
+          </div>
+          <div class="review-item review-item--cover">
+            <img src="/images/cover.png" alt="더 크라운코드 표지" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 가격 인상 히스토리 -->
+      <section class="section-price-history">
+        <p class="label-tag">Price History</p>
+        
+        <p class="section-desc">지금 이 가격이 가장 쌉니다.</p>
+        <div class="price-timeline">
+          {priceHistory.map((item) => (
+            <div class:list={["price-row", item.current && "price-row--current", item.final && "price-row--final"]}>
+              <span class="price-date">{item.date}</span>
+              <span class="price-divider">→</span>
+              <span class="price-val">{item.price}</span>
+              {item.current && <span class="price-badge">현재</span>}
+              {item.final && <span class="price-badge price-badge--final">최종 목표가</span>}
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      <!-- 임팩트 이미지 -->
+      <section class="section-impact">
+        <div class="review-item">
+          <img src="/images/15_image.png" alt="더 크라운코드 소개" />
+        </div>
+      </section>
+
+      <!-- 이 책이 필요한 분들 -->
+      <section class="section-pain" id="tab-pain">
+
+        <h2 class="section-title">혹시 이런 질문, 해보셨나요?</h2>
+        <div class="pain-grid">
+          {painPoints.map((point) => (
+            <div class="pain-card">
+              <span class="pain-icon">🤔</span>
+              <p>{point}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="review-gallery">
+          <div class="review-item">
+            <img src="/images/16_image.png" alt="소개 이미지 16" />
+          </div>
+          <a href="https://www.crowncode.site/kingmaker" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/17_image.png" alt="소개 이미지 17" />
+          </a>
+          <div class="review-item">
+            <img src="/images/18_image.png" alt="소개 이미지 18" />
+          </div>
+          <a href="https://cafe.naver.com/kingdomofuniverse/560" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/19_image.png" alt="소개 이미지 19" />
+          </a>
+          <div class="review-item">
+            <img src="/images/20_image.png" alt="소개 이미지 20" />
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 진짜 어려운 것들 -->
+      <section class="section-goals">
+  <h2 class="section-title">외국 이성을 만나거나 돈을 버는 건,<br/> 건강해지는 건 사실 쉬워요.<br/><br/>진짜 어려운 건 따로 있습니다.</h2>
+       
+        <div class="goal-list">
+          {goals.map((g) => (
+            <div class="goal-item">
+              <span class="goal-num">{g.num}</span>
+              <div class="goal-body">
+                <p class="goal-title">{g.title}</p>
+                <p class="goal-sub">{g.sub}</p>
+                <p class="goal-desc">{g.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 21~23 이미지 -->
+      <section class="section-hero">
+        <div class="review-gallery">
+          <div class="review-item">
+            <img src="/images/21_image.png" alt="소개 이미지 21" />
+          </div>
+          <div class="review-item">
+            <img src="/images/22_image.png" alt="소개 이미지 22" />
+          </div>
+          <a href="https://open.kakao.com/o/sW27Jeth" target="_blank" rel="noopener noreferrer" class="review-item review-item--link">
+            <img src="/images/23_image.png" alt="소개 이미지 23" />
+          </a>
+          <div class="review-item">
+            <img src="/images/24_image.png" alt="소개 이미지 24" />
+          </div>
+          <div class="review-item">
+            <img src="/images/harim_0.png" alt="하림 소개" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 구매 CTA -->
+      <section class="section-cta">
+        <!-- 기부 안내 -->
+        <div class="donation-notice">
+          <p>크라운코드는 매월 수익의 일부를 <strong>6.25 대한민국 참전용사</strong>와 <strong>한국의 미래인 어린이</strong>에게 기부합니다.</p>
+        </div>
+        <div class="review-item">
+          <img src="/images/25_image.png" alt="" />
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 저자 소개 탭 -->
+    <div id="tab-author" class="tab-content">
+      <div class="author-sec">
+
+        <!-- 로이 -->
+        <div class="author-card">
+          <div class="author-header">
+            <div class="author-avatar">
+              <img
+                src="https://cdn.imweb.me/upload/S2026022631349774b0b42/35ca3940d90ac.png"
+                alt="로이 프로필"
+                class="author-photo"
+              />
+            </div>
+            <div class="author-info">
+              <p class="author-role">크라운코드 대표 · Top Kingmaker</p>
+              <h3 class="author-name">로이 Roy</h3>
+            </div>
+          </div>
+          <ul class="author-creds">
+            <li>◆ 인스타 2만 + 스레드 6천 인플루언서</li>
+            <li>◆ 종합컨설팅 회사, 크라운코드 대표</li>
+            <li>◆ 해외 심리치료 회사 대표</li>
+            <li>◆ 마케팅 회사 대표</li>
+            <li>◆ 심리상담사 1급</li>
+            <li>◆ 전 초등학교 영어회화 강사</li>
+            <li>◆ [더크라운코드] 공동저자</li>
+          </ul>
+        </div>
+
+        <!-- 신사 -->
+        <div class="author-card">
+          <div class="author-header">
+            <div class="author-avatar author-avatar--sinsa">
+              <img src="/images/sinsa.png" alt="신사 Sinsa 프로필" class="author-photo" />
+            </div>
+            <div class="author-info">
+              <p class="author-role">크라운코드 부대표</p>
+              <h3 class="author-name">신사 Sinsa</h3>
+            </div>
+          </div>
+          <ul class="author-creds">
+            <li>◆ 브랜드 인스타그램 1만 팔로워</li>
+            <li>◆ 총 5,000만 누적 조회수 달성</li>
+            <li>◆ [더크라운코드] 공동저자</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="site-footer">
+      <p>블랙포인트그룹(BPGroup) | 대표 이하림</p>
+      <p>사업자등록번호: 513-45-01146</p>
+      <p>Tel : 032-566-1369</p>
+      <p>E-mail: contact@crowncode.site</p>
+      <p>Address: 인천광역시 연수구 인천타워대로 301, <br/>B동 716-B13호 (송도센텀하이브)</p>
+      <p class="footer-copy">Copyright 2026 All Rights Reserved.</p>
+      <button type="button" class="footer-privacy-btn" onclick="openPrivacyModal()">개인정보 처리방침</button>
+    </footer>
+
+  </main>
+
+  <!-- RIGHT: 구매 패널 -->
+  <aside class="panel-right" aria-label="구매 패널">
+    <div class="panel-scroll">
+
+      <p class="panel-tag">Book · 전자책</p>
+
+      <h2 class="panel-main-title">
+        더 크라운코드<br />
+        
+      </h2>
+
+      <div class="panel-price-block">
+        <div class="panel-price-top">
+          <span class="panel-price-original">₩100,000</span>
+          <span class="panel-discount-badge">95% 할인</span>
+        </div>
+        <p class="panel-price">₩5,500</p>
+        <p class="panel-price-note">
+         
+          ⚠️ 이 책은 점점 더 비싸집니다
+        </p>
+      </div>
+
+      <a
+        href="https://open.kakao.com/o/sW27Jeth"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="panel-cta-btn"
+      >
+        구매하기
+      </a>
+
+      <a
+        href="https://docs.google.com/document/d/1bO-IZJ2X1CtiSWHObFwTTMpcNdAnkzR-N-1nVIvYt6A/edit?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="trial-btn"
+      >
+        📖 체험판 미리 보기
+      </a>
+
+      <!-- 계좌 안내 -->
+      <div class="panel-account-info">
+        <p class="panel-account-title">💳 계좌이체 안내</p>
+        <div class="panel-account-row">
+          <span class="panel-account-label">금액</span>
+          <span class="panel-account-value">₩5,500</span>
+        </div>
+        <div class="panel-account-row">
+          <span class="panel-account-label">은행</span>
+          <span class="panel-account-value">카카오뱅크</span>
+        </div>
+        <div class="panel-account-row">
+          <span class="panel-account-label">계좌번호</span>
+          <span class="panel-account-value panel-account-number">3333-35-9336020</span>
+        </div>
+        <div class="panel-account-row">
+          <span class="panel-account-label">예금주</span>
+          <span class="panel-account-value">블랙포인트그룹</span>
+        </div>
+        <div class="panel-account-steps">
+          <a href="https://pf.kakao.com/_ynHWn" target="_blank" rel="noopener noreferrer" class="panel-kakao-channel-btn">
+            💛 카카오채널 즐겨찾기
+          </a>
+          <p class="panel-account-step-title">입금 후 아래 항목을 매니저에게 전송해주세요</p>
+          <ol class="panel-account-step-list">
+            <li>카톡채널 즐겨찾기 + 친구추가 화면 스크린샷</li>
+            <li>계좌이체 내역 스크린샷</li>
+            <li>성함 · 연락처 · 이메일</li>
+          </ol>
+          <p class="panel-account-warn">⚠ 6가지 모두 제출하셔야 책을 받으실 수 있습니다</p>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+
+<!-- 모바일 하단 바 -->
+<div class="mobile-bar">
+  <span class="mobile-bar-label">더 크라운코드 · ₩5,500</span>
+  <a href="https://open.kakao.com/o/sW27Jeth" target="_blank" rel="noopener noreferrer" class="btn-black mobile-buy-btn">
+    구매하기
+  </a>
+</div>
+
+<!-- 이메일 입력 모달 -->
+<div id="book-email-modal" class="book-email-overlay" aria-hidden="true">
+  <div class="book-email-card" role="dialog" aria-modal="true">
+    <button class="book-email-close" onclick="closeBookEmailModal()" aria-label="닫기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="book-email-badge">더 크라운코드</p>
+    <h2 class="book-email-title">결제 안내 이메일 주소</h2>
+    <p class="book-email-desc">결제 완료 후 확인 메일을 보내드립니다.<br/>정확한 이메일 주소를 입력해주세요.</p>
+    <input type="email" id="book-email-input" class="book-email-input" placeholder="example@email.com" autocomplete="email" />
+    <p id="book-email-error" class="book-email-error"></p>
+    <button class="book-email-confirm-btn" id="book-email-confirm-btn" onclick="proceedBookPayment()">결제하기</button>
+  </div>
+</div>
+
+<!-- 개인정보 처리방침 모달 -->
+<div id="privacy-modal" class="modal-overlay" aria-hidden="true" onclick="handlePrivacyOverlayClick(event)">
+  <div class="modal-card privacy-modal-card" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+    <button class="modal-close" onclick="closePrivacyModal()" aria-label="닫기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <span class="modal-badge">블랙포인트그룹(BPGroup)</span>
+      <h2 id="privacy-modal-title" class="modal-title">개인정보 처리방침</h2>
+    </div>
+    <div class="privacy-modal-body">
+      <p class="privacy-section-desc">블랙포인트그룹(BPGroup)(이하 "회사")는 개인정보보호법에 따라 이용자의 개인정보를 보호하고 관련 고충을 신속하게 처리하기 위해 다음과 같이 개인정보 처리방침을 수립·공개합니다.</p>
+      <div class="privacy-section">
+        <h3 class="privacy-section-title">1. 수집하는 개인정보 항목</h3>
+        <ul class="privacy-list"><li>필수 항목 : 이름, 전화번호</li></ul>
+      </div>
+      <div class="privacy-section">
+        <h3 class="privacy-section-title">2. 개인정보의 수집 및 이용 목적</h3>
+        <ul class="privacy-list">
+          <li>구매 신청 접수 및 확인</li>
+          <li>안내 연락</li>
+        </ul>
+      </div>
+      <div class="privacy-section">
+        <h3 class="privacy-section-title">3. 개인정보의 보유 및 이용 기간</h3>
+        <p>처리 완료 후 즉시 파기합니다.</p>
+      </div>
+      <p class="privacy-effective-date">시행일 : 2026년 06월 05일</p>
+    </div>
+    <button class="btn-black privacy-confirm-btn" onclick="closePrivacyModal()">확인</button>
+  </div>
+</div>
+
+</LightLayout>
+
+<script is:inline>
+  var TOSS_CLIENT_KEY = 'test_ck_Ba5PzR0ArnL5OeapQMRX3vmYnNeD';
+
+  function requestTossPayment() {
+    document.getElementById('book-email-input').value = '';
+    document.getElementById('book-email-error').textContent = '';
+    var modal = document.getElementById('book-email-modal');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-open');
+    setTimeout(function() { document.getElementById('book-email-input').focus(); }, 80);
+  }
+
+  function closeBookEmailModal() {
+    var modal = document.getElementById('book-email-modal');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+  }
+
+  async function proceedBookPayment() {
+    var email = document.getElementById('book-email-input').value.trim();
+    var errEl = document.getElementById('book-email-error');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = '올바른 이메일 주소를 입력해주세요.';
+      return;
+    }
+    errEl.textContent = '';
+    var btn = document.getElementById('book-email-confirm-btn');
+    btn.disabled = true;
+    btn.textContent = '결제창 여는 중...';
+    var tp = window.TossPayments;
+    if (!tp) {
+      alert('결제 모듈이 로딩 중입니다. 잠시 후 다시 눌러주세요.');
+      btn.disabled = false;
+      btn.textContent = '결제하기';
+      return;
+    }
+    closeBookEmailModal();
+    try {
+      var tossPayments = await tp(TOSS_CLIENT_KEY);
+      var payment = tossPayments.payment({ customerKey: '@@ANONYMOUS' });
+      var orderId = 'BOOK_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+      await payment.requestPayment({
+        method: 'CARD',
+        amount: { currency: 'KRW', value: 5500 },
+        orderId: orderId,
+        orderName: '더 크라운코드',
+        customerEmail: email,
+        successUrl: window.location.origin + '/book/success?email=' + encodeURIComponent(email),
+        failUrl: window.location.origin + '/book',
+      });
+    } catch (err) {
+      console.error('[Toss] 결제 오류:', err);
+      if (!err || err.code !== 'USER_CANCEL') {
+        alert('결제 오류: ' + (err && err.message ? err.message : String(err)));
+      }
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '결제하기';
+    }
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.classList.toggle('tab-active', btn.dataset.tab === tab);
+    });
+    var target = document.getElementById('tab-' + tab);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function initScrollSpy() {
+    var sections = [
+      document.getElementById('tab-book'),
+      document.getElementById('tab-author'),
+    ];
+    var btns = document.querySelectorAll('.tab-btn');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id.replace('tab-', '');
+          btns.forEach(function(btn) {
+            btn.classList.toggle('tab-active', btn.dataset.tab === id);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(function(sec) { if (sec) observer.observe(sec); });
+  }
+
+
+  function startViewerCounter() {
+    var el = document.getElementById('viewer-count');
+    if (!el) return;
+    el.textContent = Math.floor(Math.random() * 46) + 5;
+    setInterval(function() {
+      el.textContent = Math.floor(Math.random() * 46) + 5;
+    }, 60000);
+  }
+
+  function openPrivacyModal() {
+    var modal = document.getElementById('privacy-modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-open');
+  }
+
+  function closePrivacyModal() {
+    var modal = document.getElementById('privacy-modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+  }
+
+  function handlePrivacyOverlayClick(e) {
+    if (e.target.id === 'privacy-modal') closePrivacyModal();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    startViewerCounter();
+    initScrollSpy();
+    document.getElementById('book-email-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeBookEmailModal();
+    });
+    document.getElementById('book-email-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') proceedBookPayment();
+    });
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closePrivacyModal(); closeBookEmailModal(); }
+  });
+</script>
+
+<style>
+@font-face {
+  font-family: "Amphora";
+  src: url("/fonts/Amphora-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a1a1a;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 70px;
+}
+
+.site-header-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.header-logo-img { height: 60px; width: auto; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.55)); }
+.header-brand-name { font-family: "Amphora", sans-serif; font-size: 24px; font-weight: normal; color: #f0f0f0; }
+
+.site-nav { display: flex; align-items: center; gap: 24px; }
+.site-nav-link {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-nav-link:hover { color: #f0f0f0; }
+.site-nav-link--active { color: #f0f0f0; }
+
+/* ── LAYOUT ── */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  align-items: start;
+  max-width: 1140px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.content-left { overflow-x: clip; display: flex; flex-direction: column; background: #111111; }
+
+/* ── BOOK COVER ── */
+.book-cover-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.book-cover-img {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ── TAB NAV ── */
+.tab-nav {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: #1a1a1a;
+  position: sticky;
+  top: 70px;
+  z-index: 90;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(255,255,255,0.4);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.tab-active { color: #f0f0f0; border-bottom-color: #ffffff; }
+
+.tab-content { padding: 0; }
+
+/* ── SECTIONS ── */
+.section-hero {
+  padding: 48px 36px;
+}
+
+.section-pain,
+.section-price-history,
+.section-cta {
+  padding: 48px 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.section-goals {
+  padding: 48px 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.section-title {
+  font-size: 22px;
+  color: #f0f0f0e6;
+  margin-bottom: 15px;
+}
+
+.section-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* ── HERO ── */
+.hero-title {
+  font-size: clamp(26px, 4vw, 38px);
+  color: #f0f0f0;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.hero-highlight {
+  color: #ffffff;
+  font-style: normal;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.hero-desc strong { color: #ffffff; }
+
+.review-event-banner {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.review-event-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.review-event-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
+
+.review-event-desc strong { color: #f0f0f0; }
+
+/* ── REVIEW GALLERY ── */
+.review-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.review-item {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.review-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.review-item--link {
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.review-item--link:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.review-item--cover {
+  display: flex;
+  justify-content: center;
+}
+
+.review-item--cover img {
+  width: 50%;
+}
+
+/* ── IMPACT COPY ── */
+.section-impact {
+  padding: 64px 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-align: center;
+}
+
+.impact-text {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 60px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+/* ── PAIN GRID ── */
+.pain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.pain-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+
+.pain-icon { color: #ffffff; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.pain-card p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+.pain-answer {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+/* ── GOALS ── */
+.goal-list { display: flex; flex-direction: column; gap: 20px; }
+
+.goal-item {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+.goal-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.goal-title { font-size: 17px; font-weight: 700; color: #ef4444; margin-bottom: 2px; }
+.goal-sub { font-size: 12px; color: #ffffff; letter-spacing: 0.08em; margin-bottom: 10px; }
+.goal-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+/* ── PRICE HISTORY ── */
+.price-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+}
+
+.price-row--current {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.3);
+}
+
+.price-row--final {
+  background: rgba(239,68,68,0.05);
+  border-color: rgba(239,68,68,0.2);
+}
+
+.price-date { font-size: 13px; color: rgba(255,255,255,0.4); min-width: 90px; }
+.price-divider { color: rgba(255,255,255,0.2); font-size: 13px; }
+.price-val { font-size: 16px; font-weight: 700; color: #f0f0f0; flex: 1; }
+
+.price-row--current .price-val { color: #ECAF57; }
+.price-row--final .price-val { color: rgba(239,68,68,0.8); }
+
+.price-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(201,168,76,0.2);
+  color: #ECAF57;
+}
+
+.price-badge--final { background: rgba(239,68,68,0.2); color: rgba(239,68,68,0.9); }
+
+.trial-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.trial-link:hover { opacity: 0.75; }
+
+/* ── CTA SECTION ── */
+.cta-quote {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.cta-attr {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 28px;
+}
+
+.cta-main-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 18px 24px;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  margin-bottom: 16px;
+}
+
+.cta-main-btn:hover { background: #e8e8e8; transform: translateY(-2px); }
+
+.cta-contact { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+
+.kakao-link { color: #ffffff; text-decoration: underline; text-underline-offset: 2px; }
+
+.donation-notice {
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+
+.donation-notice p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; }
+.donation-notice strong { color: rgba(255,255,255,0.65); }
+
+/* ── AUTHOR SEC ── */
+.author-sec {
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.author-card {
+  padding: 24px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+}
+
+.author-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.author-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.25);
+}
+
+.author-photo { width: 100%; height: 100%; object-fit: cover; }
+
+.author-avatar--sinsa {
+  overflow: hidden;
+}
+
+.author-role { font-size: 12px; color: #ffffff; margin-bottom: 4px; }
+.author-name { font-size: 20px; font-weight: 700; color: #f0f0f0; }
+
+.author-creds {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.author-creds li { font-size: 14px; color: rgba(255,255,255,0.65); }
+
+/* ── FOOTER ── */
+.site-footer {
+  padding: 40px 36px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer p { font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.6; }
+.footer-copy { margin-top: 12px; font-size: 11px; color: rgba(255,255,255,0.2) !important; }
+
+.footer-privacy-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  text-align: left;
+  margin-top: 4px;
+}
+
+/* ── RIGHT PANEL ── */
+.panel-right {
+  position: sticky;
+  top: 70px;
+  align-self: start;
+}
+
+.panel-scroll {
+  padding: 35px 22px;
+  background: #1f1f1f;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #ffffff; }
+
+.panel-main-title { font-size: 17px; color: #f0f0f0; line-height: 1.4; font-weight: 700; }
+.panel-sub-title { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 400; }
+
+.panel-price-block {
+  padding: 18px 20px;
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-price-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  
+}
+
+.panel-price-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-price-original {
+  font-size: 14px;
+  color: rgba(255,255,255,0.35);
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 1.5px;
+}
+
+.panel-discount-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+.panel-price {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.panel-price-note {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ef4444;
+  letter-spacing: 0.01em;
+}
+
+.panel-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.panel-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+}
+
+.panel-stat-num { font-size: 22px; font-weight: 700; color: #f0f0f0; line-height: 1.2; }
+.panel-stat-plus { font-size: 14px; }
+.panel-stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; text-align: center; }
+
+.panel-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ECAF57 0%, #FFF8AF 50%, #ECAF57 100%);
+  color: #3a2200;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.45);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(236,175,87,0.5);
+  text-align: center;
+}
+
+.panel-cta-btn:hover { filter: brightness(1.07); transform: translateY(-2px); box-shadow: 0 6px 26px rgba(236,175,87,0.6); }
+
+.trial-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  text-decoration: none;
+  transition: all 0.22s;
+  text-align: center;
+}
+
+.trial-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.35);
+  transform: translateY(-1px);
+}
+
+.panel-account-info {
+  margin-top: 4px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-account-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+
+.panel-account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-account-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+.panel-account-value {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  text-align: right;
+}
+
+.panel-account-number {
+  font-family: monospace;
+  font-size: 13px;
+  color: #f0f0f0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.panel-account-steps {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.panel-kakao-channel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  background: #FEE500;
+  color: #391B1B;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+.panel-kakao-channel-btn:hover { opacity: 0.85; }
+
+.panel-account-step-title {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+}
+
+.panel-account-step-list {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.panel-account-step-list li {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+.panel-account-warn {
+  font-size: 10px;
+  color: #ef4444;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.panel-viewers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+}
+
+.panel-viewers-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ade80; flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.panel-review-event {
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+}
+
+.panel-review-title { font-size: 12px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+.panel-review-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.panel-review-desc strong { color: #f0f0f0; }
+
+/* ── MOBILE BAR ── */
+.mobile-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: #1a1a1a;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 20px;
+  gap: 12px;
+  align-items: center;
+}
+
+.mobile-bar-label { font-size: 13px; color: rgba(255,255,255,0.5); flex: 1; }
+
+.mobile-buy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: auto;
+  padding: 12px 20px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.7);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.is-open { display: flex; }
+
+.modal-card {
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.modal-header { margin-bottom: 20px; }
+.modal-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #ffffff; margin-bottom: 8px; }
+.modal-title { font-size: 20px; color: #f0f0f0; }
+
+.privacy-modal-card { max-width: 520px; }
+
+.privacy-modal-body {
+  max-height: 50vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.privacy-section-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+.privacy-section { display: flex; flex-direction: column; gap: 8px; }
+.privacy-section-title { font-size: 14px; color: #f0f0f0; font-weight: 600; }
+.privacy-section p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+.privacy-list { list-style: disc; padding-left: 16px; display: flex; flex-direction: column; gap: 4px; }
+.privacy-list li { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+.privacy-effective-date { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+.privacy-confirm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 24px;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.privacy-confirm-btn:hover { background: #e8e8e8; }
+
+/* ── RESPONSIVE ── */
+/* ── BOOK EMAIL MODAL ── */
+.book-email-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(0,0,0,0.75);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.book-email-overlay.is-open { display: flex; }
+
+.book-email-card {
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.book-email-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.book-email-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.book-email-title {
+  font-size: 20px;
+  color: #f0f0f0;
+  font-weight: 700;
+}
+
+.book-email-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+}
+
+.book-email-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: #f0f0f0;
+  font-size: 15px;
+  font-family: "Noto Sans KR", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.book-email-input:focus { border-color: rgba(255,255,255,0.35); }
+.book-email-input::placeholder { color: rgba(255,255,255,0.25); }
+
+.book-email-error {
+  font-size: 13px;
+  color: #ef4444;
+  min-height: 18px;
+}
+
+.book-email-confirm-btn {
+  width: 100%;
+  padding: 16px;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.22s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.book-email-confirm-btn:hover { background: #e8e8e8; transform: translateY(-2px); }
+.book-email-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+@media (max-width: 768px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .panel-right { display: none; }
+  .mobile-bar { display: flex; }
+  .content-left { padding-bottom: 80px; }
+  .impact-text { font-size: 36px; }
+  .section-impact { padding: 48px 24px; }
+
+  .section-hero,
+  .section-pain,
+  .section-goals,
+  .section-price-history,
+  .section-cta { padding: 36px 20px; }
+
+  .pain-grid { grid-template-columns: 1fr; }
+
+  .author-sec,
+  .site-footer { padding-left: 20px; padding-right: 20px; }
+
+  .book-cover-wrap { padding: 40px 20px; }
+}
+</style>
